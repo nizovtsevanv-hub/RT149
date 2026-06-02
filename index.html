@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical English Starter Book</title>
+  <style>
+    :root {
+      --bg: #F4EFE8;
+      --bg-alt: #F2ECE4;
+      --page: #FCF9F5;
+      --card: #FFFDFB;
+      --navy: #0f2a44;
+      --blue: #1e40af;
+      --border: #E5D8CC;
+      --text: #4E4540;
+      --text-muted: #6B625C;
+      --accent: #A64D79;
+      --grain-opacity: 0.03;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Inter, Arial, sans-serif;
+      font-size: 16px;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at top center, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 38%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 36% 24% at 0% 0%, rgba(255, 255, 255, 0.32), transparent 72%),
+        radial-gradient(ellipse 34% 22% at 100% 0%, rgba(255, 255, 255, 0.26), transparent 70%),
+        radial-gradient(ellipse 38% 26% at 100% 100%, rgba(78, 69, 64, 0.045), transparent 74%),
+        radial-gradient(ellipse 36% 24% at 0% 100%, rgba(78, 69, 64, 0.04), transparent 72%);
+    }
+    header {
+      background: linear-gradient(90deg, #0f2a44, #0b3d66);
+      color: #fff;
+      padding: 28px 20px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 8px; font-size: 28px; }
+    header p { margin: 4px 0; opacity: 0.95; }
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+      width: 100%;
+    }
+    .cards {
+      display: grid;
+      gap: 16px;
+    }
+    a.card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset, 0 6px 18px rgba(78, 69, 64, 0.06);
+    }
+    a.card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 8px 24px rgba(30, 64, 175, 0.15);
+    }
+    a.card h2 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 22px;
+    }
+    a.card p { margin: 0; line-height: 1.5; }
+    .tag {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: #dbeafe;
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 14px;
+      color: #64748b;
+      border-top: 1px solid var(--border);
+    }
+    .units {
+      margin-top: 24px;
+      padding: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(78, 69, 64, 0.05);
+    }
+    .units h3 { margin: 0 0 10px; color: var(--navy); font-size: 18px; }
+    .units ul { margin: 0; padding-left: 20px; }
+    .units li { margin: 6px 0; }
+    @media (max-width: 767px) {
+      body { overflow-x: hidden; }
+      header { padding: 20px 16px; }
+      header h1 { font-size: 22px; }
+      main { padding: 20px 16px 32px; }
+      a.card { padding: 18px; min-height: 44px; }
+      a.card h2 { font-size: 20px; }
+    }
+    @media (max-width: 480px) {
+      header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Technical English Starter Book</h1>
+    <p>Visual Technical English for Beginners</p>
+    <p>Визуальный технический английский с нуля</p>
+  </header>
+
+  <main>
+    <div class="cards">
+      <a class="card" href="./technical-english-digital-book.html">
+        <h2>Open Digital Version</h2>
+        <p>Interactive Technical English lesson: flipbook navigation, vocabulary cards, workbook checks, RU translation toggle, and British English pronunciation.</p>
+        <span class="tag">Digital edition</span>
+      </a>
+      <a class="card" href="./technical-english-print-book.html">
+        <h2>Open Print Version</h2>
+        <p>Print-ready A4 booklet for printing or PDF. All three units, exercises with answer blanks, teacher notes, and full answer key.</p>
+        <span class="tag">Print edition</span>
+      </a>
+    </div>
+
+    <div class="units">
+      <h3>Units 1–3</h3>
+      <ul>
+        <li><strong>Unit 1:</strong> Present Simple + a/an + plurals</li>
+        <li><strong>Unit 2:</strong> this/that/these/those + there is/are + have/has</li>
+        <li><strong>Unit 3:</strong> imperatives + First/Then/Finally + prepositions + can/can't</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>Author-created educational English booklet · Works locally and on GitHub Pages</footer>
+</body>
+</html>

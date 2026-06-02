@@ -1,0 +1,2529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical English Starter Book — Digital</title>
+  <style>
+    :root {
+      --bg: #F4EFE8;
+      --bg-alt: #F2ECE4;
+      --bg-soft: #EFE7DE;
+      --page: #FCF9F5;
+      --card: #FFFDFB;
+      --aviation-blue: #1e40af;
+      --blueprint-navy: #0f2a44;
+      --blueprint-blue: #0b3d66;
+      --light-blue: #dbeafe;
+      --rule-yellow: #fef3c7;
+      --unit2-green: #dcfce7;
+      --unit3-rose: #fce7f3;
+      --success: #16a34a;
+      --text: #4E4540;
+      --text-muted: #6B625C;
+      --heading: #5F3651;
+      --border: #E5D8CC;
+      --accent: #A64D79;
+      --grain-opacity: 0.032;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; overflow-x: clip; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Inter, Arial, sans-serif;
+      font-size: 16px;
+      color: var(--text);
+      min-height: 100vh;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at top center, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 38%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 36% 24% at 0% 0%, rgba(255, 255, 255, 0.32), transparent 72%),
+        radial-gradient(ellipse 34% 22% at 100% 0%, rgba(255, 255, 255, 0.26), transparent 70%),
+        radial-gradient(ellipse 38% 26% at 100% 100%, rgba(78, 69, 64, 0.045), transparent 74%),
+        radial-gradient(ellipse 36% 24% at 0% 100%, rgba(78, 69, 64, 0.04), transparent 72%);
+    }
+    body.ru-off .ru-support { display: none; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(90deg, var(--blueprint-navy), var(--blueprint-blue));
+      color: #fff;
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .brand p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      opacity: 0.95;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    button, .btn {
+      border: 1px solid #93c5fd;
+      background: var(--card);
+      color: var(--blueprint-blue);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+    button:hover, .btn:hover { background: var(--light-blue); }
+    .container {
+      max-width: 1120px;
+      margin: 20px auto;
+      padding: 0 16px 20px;
+    }
+    .progress-wrap {
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 12px;
+      margin-bottom: 14px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3b82f6, #1e40af);
+      transition: width 0.2s ease;
+    }
+    .page-shell {
+      background: var(--page);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      min-height: 68vh;
+      padding: 20px;
+      box-shadow: 0 10px 28px rgba(78, 69, 64, 0.08), 0 1px 0 rgba(255, 255, 255, 0.65) inset;
+      position: relative;
+      overflow: hidden;
+    }
+    .inner-page-template,
+    .book-page,
+    .page {
+      position: relative;
+      padding-bottom: 28mm;
+      box-sizing: border-box;
+    }
+    .page {
+      display: none;
+      animation: flip 0.3s ease;
+      min-height: 62vh;
+      background: var(--card);
+      overflow-x: hidden;
+      overflow-y: visible;
+    }
+    .page.active { display: block; }
+    .page-watermark {
+      display: none !important;
+      position: absolute;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .cover-page .page-watermark.cover-watermark,
+    .back-cover-page .page-watermark.cover-watermark {
+      display: flex !important;
+    }
+    .page:not(.cover-page):not(.back-cover-page) .page-watermark {
+      display: none !important;
+    }
+    .page-watermark.cover-watermark svg {
+      width: 200px;
+      height: 200px;
+      opacity: 0.09;
+    }
+    .akulina-monogram.luxury-classic { color: #A64D79; }
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+    .page-footer {
+      position: absolute;
+      left: 14mm;
+      right: 14mm;
+      bottom: 8mm;
+      height: 14mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .cover-page .page-footer,
+    .back-cover-page .page-footer {
+      display: none;
+    }
+    .footer-monogram {
+      width: 28px;
+      height: 28px;
+      color: #A64D79;
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+    .page-number {
+      position: absolute;
+      right: 14mm;
+      bottom: 9mm;
+      font-size: 10.5px;
+      color: #8A6A78;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      z-index: 6;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .cover-page .page-number,
+    .back-cover-page .page-number {
+      display: none;
+    }
+    .cover-logo, .back-cover-logo {
+      text-align: center;
+      margin: 0 auto 20px;
+      max-width: 320px;
+      position: relative;
+      z-index: 2;
+    }
+    .cover-logo .akulina-monogram.luxury-classic,
+    .back-cover-logo .akulina-monogram.luxury-classic {
+      width: 156px;
+      height: 156px;
+      opacity: 0.26;
+      color: #A64D79;
+    }
+    .akulina-wordmark {
+      margin-top: 10px;
+      text-align: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 16px;
+      letter-spacing: 0.28em;
+      color: #A64D79;
+      opacity: 0.92;
+      font-weight: 700;
+    }
+    .author-submark {
+      margin-top: 5px;
+      text-align: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.82;
+    }
+    .author-submark.ru-support { text-transform: none; letter-spacing: 0; font-size: 11px; opacity: 0.9; }
+    .cover-page, .back-cover-page {
+      background:
+        radial-gradient(circle at 50% 38%, rgba(166, 77, 121, 0.07) 0%, rgba(255, 255, 255, 0) 45%),
+        radial-gradient(circle at top center, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 40%),
+        linear-gradient(180deg, var(--card) 0%, var(--page) 100%);
+    }
+    @keyframes flip {
+      from { transform: perspective(600px) rotateY(8deg); opacity: 0.5; }
+      to { transform: perspective(600px) rotateY(0deg); opacity: 1; }
+    }
+    h2 { margin-top: 0; color: var(--heading); font-size: 30px; }
+    h3 { color: var(--aviation-blue); font-size: 22px; }
+    h4 { font-size: 18px; margin-bottom: 8px; }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+      padding: 14px;
+      margin: 12px 0;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset, 0 4px 14px rgba(78, 69, 64, 0.05);
+    }
+    .rule-card { background: var(--rule-yellow); }
+    .unit2 { background: var(--unit2-green); }
+    .unit3 { background: var(--unit3-rose); }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+    }
+    .vocab-item {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+    .vocab-item:focus-visible {
+      outline: 3px solid #A64D79;
+      outline-offset: 3px;
+    }
+    button.vocab-item {
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      color: inherit;
+      display: block;
+    }
+    .small { font-size: 14px; opacity: 0.9; }
+    .hidden { display: none; }
+    .ok { color: var(--success); font-weight: 700; }
+    .bad { color: #b91c1c; font-weight: 700; }
+    .control-row {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .page-indicator { font-weight: 700; color: var(--blueprint-blue); }
+    .unit-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .unit-tabs button.active-tab {
+      background: var(--blueprint-blue);
+      color: #fff;
+    }
+    .task-tools {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .translation-note {
+      display: none;
+      background: #eef6ff;
+      border-left: 4px solid var(--aviation-blue);
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin: 8px 0;
+    }
+    .translation-note.show { display: block; }
+    .blueprint {
+      background: #0b2f4c;
+      border-radius: 14px;
+      padding: 12px;
+      border: 2px solid #1e3a8a;
+      color: #fff;
+    }
+    .blueprint-wrap {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 14px;
+    }
+    .blueprint-visual {
+      min-height: 320px;
+      border: 2px solid #93c5fd;
+      border-radius: 10px;
+      position: relative;
+      background:
+        linear-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.18) 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow: hidden;
+    }
+    .blueprint-visual img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+    .interactive-slide { margin: 12px 0; }
+    .interactive-hint {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0 0 10px;
+    }
+    .speech-note { font-size: 13px; color: var(--text-muted); }
+    .interactive-visual,
+    .lesson-layout,
+    .interactive-layout,
+    .slide-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.95fr);
+      gap: 24px;
+      align-items: start;
+      max-width: 100%;
+      min-width: 0;
+    }
+    .term-panel,
+    .right-sidebar,
+    .details-panel,
+    .component-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 0;
+      width: 100%;
+      max-height: calc(100vh - 140px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .visual-column { width: 100%; min-width: 0; }
+    .mobile-only { display: none; }
+    .mobile-term-preview {
+      display: none;
+      border: 2px solid rgba(245, 217, 10, 0.75);
+      border-radius: 14px;
+      background: var(--card);
+      padding: 12px 14px;
+      margin: 10px 0 0;
+      box-shadow: 0 4px 14px rgba(78, 69, 64, 0.06);
+    }
+    .mobile-term-preview strong { color: var(--heading); font-size: 17px; }
+    .mobile-term-preview .ipa { color: var(--text-muted); font-size: 14px; }
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 15;
+      background: rgba(252, 249, 245, 0.97);
+      border-top: 2px solid var(--border);
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -6px 18px rgba(15, 42, 68, 0.12);
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .mobile-nav button {
+      flex: 1;
+      max-width: 42%;
+      border-radius: 14px;
+      font-size: 15px;
+    }
+    .mobile-nav-indicator {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blueprint-blue);
+      line-height: 1.25;
+      min-width: 0;
+    }
+    .visual-frame {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      max-height: 680px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .visual-frame img {
+      width: 100%;
+      height: 100%;
+      max-height: 640px;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+    /* Overlay hides baked-in source label on white illustration backgrounds. */
+    .image-branding-patch {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 6px;
+      box-shadow: 0 0 0 1px rgba(230, 230, 230, 0.45);
+      pointer-events: none;
+      z-index: 8;
+    }
+    .image-branding-patch--cutaway {
+      left: 0.5%;
+      top: 0.4%;
+      width: 13%;
+      height: 4%;
+    }
+    .image-branding-patch--installation {
+      right: 0.6%;
+      bottom: 9%;
+      left: auto;
+      width: 14%;
+      height: 4.2%;
+    }
+    .hotspot-layer,
+    .zone-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+    }
+    .component-zone {
+      position: absolute;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      z-index: 10;
+      padding: 0;
+      touch-action: manipulation;
+      min-width: 0;
+      min-height: 0;
+    }
+    .component-zone:hover {
+      background: transparent;
+    }
+    .component-zone.active {
+      background: transparent;
+      outline: none;
+    }
+    .component-zone:focus-visible {
+      outline: 2px dashed #F5D90A;
+      outline-offset: 3px;
+    }
+    .term-card-body:focus-visible,
+    .term-card-actions button:focus-visible {
+      outline: 2px dashed #F5D90A;
+      outline-offset: 3px;
+    }
+    @keyframes vocabWiggle {
+      0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+      20%  { transform: translate(1px, -1px) rotate(-0.8deg) scale(1.02); }
+      40%  { transform: translate(-1px, 1px) rotate(0.8deg) scale(1.03); }
+      60%  { transform: translate(1px, 0) rotate(-0.4deg) scale(1.02); }
+      80%  { transform: translate(-1px, 0) rotate(0.4deg) scale(1.01); }
+      100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    }
+    @keyframes markerViggle {
+      0%   { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+      20%  { transform: translate(-50%, -50%) translate(1px, -1px) rotate(-0.8deg) scale(1.02); }
+      40%  { transform: translate(-50%, -50%) translate(-1px, 1px) rotate(0.8deg) scale(1.03); }
+      60%  { transform: translate(-50%, -50%) translate(1px, 0) rotate(-0.4deg) scale(1.02); }
+      80%  { transform: translate(-50%, -50%) translate(-1px, 0) rotate(0.4deg) scale(1.01); }
+      100% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    }
+    .component-zone.animate,
+    .component-zone.exploded-item.animate,
+    .exploded-item.animate,
+    .selected-component.animate {
+      animation: vocabWiggle 360ms ease-in-out;
+    }
+    .precise-marker {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 2px dashed #F5D90A;
+      border-radius: 999px;
+      background: rgba(247, 233, 103, 0.12);
+      box-shadow: 0 0 0 3px rgba(247, 233, 103, 0.16);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 12;
+      opacity: 0;
+      transition: opacity 120ms ease, left 120ms ease, top 120ms ease;
+    }
+    .precise-marker.show { opacity: 1; }
+    .precise-marker.small { width: 18px; height: 18px; }
+    .precise-marker.medium { width: 26px; height: 26px; }
+    .precise-marker.large { width: 32px; height: 32px; }
+    .precise-marker.animate {
+      animation: markerViggle 360ms ease-in-out;
+    }
+    .term-panel.term-list,
+    .term-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: none;
+      overflow: visible;
+    }
+    .term-card,
+    .right-card,
+    .component-card {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      position: relative;
+      width: 100%;
+      min-height: 112px;
+      height: auto;
+      flex-shrink: 0;
+      padding: 14px 18px;
+      border: 1px solid #e8d2dc;
+      border-radius: 18px;
+      background: #fffafc;
+      box-sizing: border-box;
+      overflow: visible;
+      white-space: normal;
+      line-height: 1.35;
+      text-align: left;
+      transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+    }
+    .term-card:hover,
+    .right-card:hover,
+    .component-card:hover {
+      background: #FFFDF0;
+      border-color: #F7E967;
+    }
+    .term-card.active,
+    .right-card.active,
+    .component-card.active {
+      border-color: #F5D90A;
+      background: #FFFBEA;
+      box-shadow: 0 6px 18px rgba(245, 217, 10, 0.14);
+    }
+    .term-card-body {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      flex: 0 0 auto;
+      width: 100%;
+      min-height: 0;
+      text-align: left;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      white-space: normal;
+      line-height: 1.35;
+      overflow: visible;
+    }
+    .term-card-step-badge {
+      display: inline-block;
+      align-self: flex-start;
+      margin: 0 0 6px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(166, 77, 121, 0.12);
+      color: #A64D79;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .term-card-title,
+    .term-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: #5F3651;
+      line-height: 1.2;
+      display: block;
+    }
+    .term-card-ipa,
+    .term-ipa {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #6e5a67;
+      line-height: 1.25;
+      display: block;
+    }
+    .term-card-ru,
+    .term-card-ru-inline,
+    .term-ru {
+      margin-top: 4px;
+      font-size: 14px;
+      color: #7a4562;
+      line-height: 1.3;
+      display: block;
+    }
+    .term-card-hook {
+      margin-top: 6px;
+      font-size: 12px;
+      font-style: italic;
+      color: #8A6A78;
+      display: block;
+    }
+    .term-card-sentence,
+    .term-sentence {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.35;
+      color: #5F5360;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      display: block;
+      flex-shrink: 0;
+    }
+    .term-card-actions,
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 0;
+      flex-shrink: 0;
+      position: static;
+      width: 100%;
+    }
+    .term-card-back {
+      display: none;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed #E8D2DC;
+      color: #6D4458;
+    }
+    .term-card.flipped .term-card-back,
+    .right-card.flipped .term-card-back,
+    .component-card.flipped .term-card-back { display: block; }
+    .term-card-actions button,
+    .card-actions button,
+    .term-card-ru-btn,
+    .say-sentence-btn,
+    .listen-btn {
+      border: 1px solid #E8D2DC;
+      background: var(--card);
+      color: var(--heading);
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      min-height: 36px;
+      white-space: nowrap;
+      flex: 0 0 auto;
+      position: static;
+      touch-action: manipulation;
+    }
+    .listen-btn { color: #1e40af; }
+    .say-sentence-btn { color: #5F5360; }
+    .term-card-ru-btn { color: #A64D79; }
+    .term-card-ru-btn:hover,
+    .say-sentence-btn:hover,
+    .listen-btn:hover { background: #FFFDF0; border-color: #F7E967; }
+    .tap-match-pool {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .tap-match-chip {
+      border: 1px solid #E8D2DC;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      min-height: 44px;
+      font-size: 15px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .tap-match-chip.selected {
+      border-color: #A64D79;
+      background: #fdf2f8;
+      box-shadow: 0 0 0 3px rgba(166, 77, 121, 0.15);
+    }
+    .tap-match-chip.matched {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+    .tap-order-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .tap-order-slot {
+      min-height: 48px;
+      border: 2px dashed #dbeafe;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: var(--page);
+      font-weight: 600;
+      color: var(--heading);
+    }
+    .tap-order-slot.filled {
+      border-style: solid;
+      border-color: #A64D79;
+      background: var(--card);
+    }
+    .tap-order-bank {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .tap-order-chip {
+      border: 1px solid #E8D2DC;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      min-height: 44px;
+      text-align: left;
+      font-size: 15px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .tap-order-chip:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    .touch-task-hint {
+      display: none;
+      font-size: 13px;
+      color: #8A6A78;
+      margin: 6px 0 0;
+    }
+
+    @media (min-width: 1024px) {
+      .term-panel,
+      .right-sidebar,
+      .component-panel {
+        min-width: min(380px, 100%);
+      }
+    }
+
+    /* Tablet: 768px – 1023px */
+    @media (max-width: 1023px) {
+      .interactive-visual,
+      .lesson-layout,
+      .interactive-layout,
+      .slide-layout,
+      .blueprint-wrap {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .term-panel,
+      .right-sidebar,
+      .details-panel,
+      .component-panel {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        max-height: none;
+        overflow-x: hidden;
+        overflow-y: visible;
+      }
+      .visual-frame {
+        min-height: 400px;
+        max-height: 560px;
+      }
+      .container { padding: 0 14px 20px; }
+      .toc-list { columns: 1; }
+    }
+
+    /* Mobile: max-width 767px */
+    @media (max-width: 767px) {
+      body {
+        overflow-x: hidden;
+        padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+      }
+      header {
+        padding: 10px 12px;
+      }
+      .brand h1 { font-size: 18px; line-height: 1.2; }
+      .brand p { font-size: 12px; }
+      .header-actions {
+        width: 100%;
+        justify-content: stretch;
+      }
+      .header-actions button {
+        flex: 1;
+        border-radius: 14px;
+      }
+      .container {
+        max-width: 100%;
+        margin: 12px auto;
+        padding: 0 12px 12px;
+      }
+      .page-shell,
+      .page,
+      .book-page,
+      .slide {
+        width: 100%;
+        max-width: 100%;
+        padding: 16px;
+        box-sizing: border-box;
+        min-height: auto;
+      }
+      .page {
+        padding: 16px;
+        padding-bottom: 28mm;
+      }
+      h2 { font-size: 26px; }
+      h3 { font-size: 20px; }
+      .unit-tabs,
+      .toolbar,
+      .topbar,
+      .mode-switcher,
+      .task-tools {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .unit-tabs button {
+        flex: 1 1 calc(50% - 8px);
+        min-height: 44px;
+        border-radius: 14px;
+      }
+      .control-row.desktop-nav {
+        display: none;
+      }
+      .mobile-only.mobile-nav {
+        display: flex;
+      }
+      .mobile-term-preview.is-visible {
+        display: block;
+      }
+      .grid-2,
+      .right-card-list,
+      .workbook-grid,
+      .inner-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .term-panel.term-list,
+      .term-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .visual-frame {
+        min-height: 320px;
+        max-height: 480px;
+        width: 100%;
+      }
+      .visual-frame img {
+        width: 100%;
+        height: auto;
+        max-height: 460px;
+        object-fit: contain;
+        object-position: center;
+      }
+      .precise-marker { width: 30px; height: 30px; }
+      .precise-marker.small { width: 26px; height: 26px; }
+      .precise-marker.medium { width: 26px; height: 26px; }
+      .precise-marker.large { width: 32px; height: 32px; }
+      .term-panel,
+      .right-sidebar,
+      .component-panel {
+        max-height: none;
+        overflow-x: hidden;
+        overflow-y: visible;
+        gap: 12px;
+      }
+      .term-card,
+      .right-card,
+      .component-card {
+        min-height: 112px;
+        height: auto;
+        padding: 14px 18px;
+        overflow: visible;
+      }
+      .term-card-body {
+        padding: 0;
+        overflow: visible;
+      }
+      .term-card-actions,
+      .card-actions {
+        margin-top: 10px;
+        padding: 0;
+      }
+      .term-card-actions button,
+      .card-actions button,
+      .term-card-ru-btn,
+      .say-sentence-btn,
+      .listen-btn {
+        min-height: 44px;
+        font-size: 13px;
+        padding: 8px 14px;
+      }
+      .card { padding: 14px; }
+      .card ol li,
+      .card p {
+        line-height: 1.5;
+      }
+      input[type="text"],
+      select {
+        width: 100%;
+        max-width: 100%;
+        min-height: 44px;
+        font-size: 16px;
+        margin: 6px 0;
+      }
+      .card button:not(.term-card-ru-btn):not(.say-sentence-btn):not(.listen-btn) {
+        width: 100%;
+        margin-top: 8px;
+        border-radius: 14px;
+      }
+      .page-footer {
+        left: 12px;
+        right: 12px;
+        bottom: 8px;
+        height: 28px;
+      }
+      .footer-monogram {
+        width: 22px;
+        height: 22px;
+        opacity: 0.45;
+      }
+      .page-number {
+        right: 12px;
+        bottom: 12px;
+        font-size: 10px;
+      }
+      .modal-content {
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-content button {
+        width: 100%;
+        margin-top: 8px;
+        border-radius: 14px;
+      }
+      .touch-task-hint { display: block; }
+      .tap-match-mobile,
+      .tap-order-mobile { display: block; }
+      .desktop-match-row,
+      .desktop-order-fields { display: none; }
+      html { overflow-x: hidden; }
+    }
+
+    /* Small mobile: max-width 480px */
+    @media (max-width: 480px) {
+      .cover-title,
+      h1,
+      .brand h1 { font-size: 28px; }
+      h2,
+      .inner-page-title { font-size: 24px; }
+      .cover-subtitle,
+      .cover-subtitle-ru,
+      .brand p { font-size: 16px; }
+      .visual-frame { min-height: 280px; }
+      .unit-tabs button {
+        flex: 1 1 100%;
+      }
+      .mobile-nav-indicator { font-size: 12px; }
+    }
+
+  /* Desktop: min-width 1024px — default layout above */
+
+    @media print {
+      body {
+        padding-bottom: 0;
+        overflow: visible;
+        background: var(--bg);
+      }
+      body::before,
+      body::after { display: none; }
+      .page,
+      .inner-page-template,
+      .book-page {
+        padding-bottom: 28mm;
+      }
+      .page-footer {
+        bottom: 8mm;
+      }
+      .page-number {
+        bottom: 9mm;
+        right: 14mm;
+        color: #8A6A78;
+      }
+      .cover-page .page-number,
+      .back-cover-page .page-number {
+        display: none;
+      }
+      .mobile-only,
+      .mobile-nav,
+      .mobile-term-preview,
+      .no-print,
+      .component-zone,
+      .hotspot-layer,
+      .zone-layer,
+      .precise-marker,
+      .term-card-ru-btn,
+      .say-sentence-btn,
+      .listen-btn,
+      .term-card-actions,
+      .tap-match-pool,
+      .tap-order-steps,
+      .tap-order-bank,
+      .touch-task-hint { display: none !important; }
+      .desktop-only { display: block; }
+      .visual-frame img,
+      .blueprint-visual img { object-fit: contain !important; }
+      .page-shell {
+        box-shadow: none;
+        border: none;
+        background: var(--card);
+      }
+      .page { background: var(--card); }
+      .card { box-shadow: none; }
+    }
+    .callout {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #facc15;
+      color: #111827;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      border: 2px solid #111827;
+    }
+    .term-list .card { background: rgba(255,255,255,0.06); color: #fff; border-color: #93c5fd; }
+    .term-list strong { color: #fef08a; }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 14px;
+    }
+    .modal.show { display: flex; }
+    .modal-content {
+      max-width: 520px;
+      width: 100%;
+      background: var(--card);
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      padding: 16px;
+    }
+    .speaker-panel { background: #eff6ff; border: 1px dashed var(--aviation-blue); }
+    .teacher-box { background: #eefbf0; border-left: 4px solid var(--success); }
+    .unit-banner {
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .unit-banner.u1 { background: linear-gradient(90deg, #1e40af, #3b82f6); }
+    .unit-banner.u2 { background: linear-gradient(90deg, #15803d, #22c55e); }
+    .unit-banner.u3 { background: linear-gradient(90deg, #9d174d, #ec4899); }
+    .toc-list { columns: 2; gap: 24px; }
+    .toc-list li { margin: 6px 0; }
+    .progress-check { background: #f0fdf4; border: 2px solid #86efac; }
+    input[type="text"], select {
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #94a3b8;
+      min-width: 120px;
+      font-size: 16px;
+    }
+    .tap-match-mobile,
+    .tap-order-mobile { display: none; }
+  </style>
+</head>
+<body class="ru-on">
+  <header>
+    <div class="brand">
+      <h1>Technical English Starter Book</h1>
+      <p>Visual Technical English for Beginners</p>
+      <p class="ru-support">Визуальный технический английский с нуля</p>
+    </div>
+    <div class="header-actions">
+      <button id="ruToggle">RU Translation: ON</button>
+      <button id="teacherModeBtn">Teacher Mode: OFF</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="unit-tabs">
+      <button data-jump="0">Cover</button>
+      <button data-jump="4">Unit 1</button>
+      <button data-jump="9">Unit 2</button>
+      <button data-jump="14">Unit 3</button>
+      <button data-jump="22">Answer Key</button>
+    </div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+    <section class="page-shell">
+      <article class="page active cover-page" data-title="Cover">
+        <h2>Technical English Starter Book</h2>
+        <p><strong>Visual Technical English for Beginners</strong></p>
+        <p class="ru-support"><strong>Визуальный технический английский с нуля</strong></p>
+        <div class="card">
+          <h3>3 Units in this Book</h3>
+          <ul>
+            <li>Unit 1: Present Simple + a/an + plurals</li>
+            <li>Unit 2: this/that/these/those + there is/are + have/has</li>
+            <li>Unit 3: imperatives + steps + prepositions + can/can't</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="page" data-title="How To Use">
+        <h2>How To Use This Digital Book</h2>
+        <div class="card">
+          <ul>
+            <li>Use <strong>Next</strong> and <strong>Previous</strong> to flip pages.</li>
+            <li>Press keyboard arrows: Left / Right.</li>
+            <li>Click words to open vocabulary cards.</li>
+            <li>Use <strong>Translate task</strong> to view Russian task support.</li>
+            <li>Toggle <strong>RU Translation</strong> ON/OFF in the header.</li>
+          </ul>
+          <p class="ru-support">Листайте кнопками Previous / Next или стрелками клавиатуры. Нажимайте на слова для карточек. Для подсказок нажимайте Translate task. Переключатель RU Translation в шапке.</p>
+        </div>
+      </article>
+
+      <article class="page" data-title="Table of Contents">
+        <h2>Table of Contents</h2>
+        <div class="card toc-list">
+          <h3>Unit 1 — Present Simple + a/an + plurals</h3>
+          <ul>
+            <li>Unit 1 Intro</li>
+            <li>Unit 1 Vocabulary</li>
+            <li>Unit 1 Rule Cards (6 rules)</li>
+            <li>Unit 1 Workbook (5 exercises)</li>
+            <li>Unit 1 Quick Check & Speaking</li>
+          </ul>
+          <h3>Unit 2 — this/that • there is/are • have/has</h3>
+          <ul>
+            <li>Unit 2 Intro</li>
+            <li>Unit 2 Vocabulary</li>
+            <li>Unit 2 Rule Cards (3 rules)</li>
+            <li>Unit 2 Workbook (3 exercises)</li>
+            <li>Unit 2 Quick Check & Speaking</li>
+          </ul>
+          <h3>Unit 3 — Imperatives • Steps • Prepositions • can/can't</h3>
+          <ul>
+            <li>Unit 3 Intro</li>
+            <li>Unit 3 Vocabulary</li>
+            <li>Unit 3 Intro + Installation visual</li>
+            <li>Unit 3 Rule Cards (4 rules)</li>
+            <li>Unit 3 Workbook (3 exercises)</li>
+            <li>Unit 3 Quick Check & Speaking</li>
+          </ul>
+          <p class="ru-support">Три полных учебных блока: грамматика + словарь + практика + устная речь.</p>
+        </div>
+      </article>
+
+      <article class="page" data-title="Blueprint Map">
+        <h2>Panel Fastener — 3D Cutaway & Vocabulary</h2>
+        <p class="interactive-hint">Tap a part on the illustration — it speaks and comes alive. Or choose a card. <span class="speech-note">British English / en-GB</span></p>
+        <p class="ru-support interactive-hint">Нажмите на деталь на иллюстрации — она «оживёт» и произнесёт слово. Или выберите карточку.</p>
+        <div class="interactive-slide" data-slide="cutaway">
+          <div class="interactive-visual interactive-layout slide-layout">
+            <div class="visual-column">
+              <div class="visual-frame" data-slide="cutaway">
+                <img src="./images/panel-fastener-cutaway.png" alt="Panel fastener technical illustration with numbered callouts" onerror="this.onerror=null; this.src='./images/blueprint-handout.png';">
+                <div class="image-branding-patch image-branding-patch--cutaway" aria-hidden="true"></div>
+                <div class="precise-marker medium" aria-hidden="true"></div>
+                <div class="hotspot-layer zone-layer no-print"></div>
+              </div>
+              <div class="mobile-term-preview" data-preview="cutaway" aria-live="polite"></div>
+            </div>
+            <div class="term-panel right-sidebar component-panel" data-slide="cutaway"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 1 Intro">
+        <div class="unit-banner u1">UNIT 1</div>
+        <h2>Present Simple + a/an + plurals</h2>
+        <p class="ru-support"><strong>Present Simple + артикли a/an + множественное число</strong></p>
+        <p><strong>Unit goal:</strong> Say simple facts and checks about a technical drawing.</p>
+        <p class="ru-support"><strong>Цель:</strong> Говорим простые факты и проверки по техническому чертежу.</p>
+        <div class="card">
+          <p><strong>You will learn:</strong> Present Simple • he/she/it + -s • do/does not • Do/Does questions • a/an • plurals</p>
+          <p class="ru-support"><strong>Изучаем:</strong> Present Simple • -s с he/she/it • отрицание • вопросы • a/an • множественное число</p>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 1 Vocabulary">
+        <h2>Unit 1 Vocabulary</h2>
+        <div class="grid-2" id="u1Vocab"></div>
+      </article>
+
+      <article class="page" data-title="Unit 1 Rule Cards">
+        <h2>Unit 1 Rule Cards</h2>
+        <div class="card rule-card">
+          <h4>Rule 1: Present Simple = routine / fact / check</h4>
+          <button onclick="toggleRule('u1r1')">Show rule</button>
+          <div id="u1r1" class="hidden">
+            <p>Use Present Simple for regular actions, facts and checks.</p>
+            <p class="ru-support">Используем Present Simple для обычных действий, фактов и проверок.</p>
+            <p>I read a drawing. We check a thread. The tool rotates. The engineer reads a note.</p>
+          </div>
+        </div>
+        <div class="card rule-card"><h4>Rule 2: He / She / It + -s / -es</h4><button onclick="toggleRule('u1r2')">Show rule</button><div id="u1r2" class="hidden"><p>The engineer reads a note. The tool rotates clockwise. The part matches the size.</p><p class="ru-support">С he/she/it добавляем окончание -s или -es.</p></div></div>
+        <div class="card rule-card"><h4>Rule 3: Negative: do not / does not</h4><button onclick="toggleRule('u1r3')">Show rule</button><div id="u1r3" class="hidden"><p>I do not read. We do not change the note. The part does not rotate. The washer does not fit.</p><p class="ru-support">Отрицание: do not (I/we/you/they) • does not (he/she/it).</p></div></div>
+        <div class="card rule-card"><h4>Rule 4: Questions: Do / Does ...?</h4><button onclick="toggleRule('u1r4')">Show rule</button><div id="u1r4" class="hidden"><p>Do you read a drawing? Do we check a diameter? Does the tool rotate? Does the engineer check a note? Does the part meet the spec?</p><p class="ru-support">Вопрос начинается с Do или Does.</p></div></div>
+        <div class="card rule-card"><h4>Rule 5: a / an</h4><button onclick="toggleRule('u1r5')">Show rule</button><div id="u1r5" class="hidden"><p>Use <strong>a</strong> before consonant sound. Use <strong>an</strong> before vowel sound.</p><p class="ru-support">a перед согласным звуком, an перед гласным.</p><p>a thread • a washer • a drawing • an angle • an engineer</p></div></div>
+        <div class="card rule-card"><h4>Rule 6: Plurals</h4><button onclick="toggleRule('u1r6')">Show rule</button><div id="u1r6" class="hidden"><p>a thread → threads • a washer → washers • a box → boxes • a body → bodies</p><p class="ru-support">Множественное число: обычно +s; после -s, -x, -ch, -sh → +es; -y → -ies.</p></div></div>
+      </article>
+
+      <article class="page" data-title="Unit 1 Workbook">
+        <h2>Unit 1 Workbook</h2>
+        <div class="card">
+          <div class="task-tools"><button onclick="toggleTrans('u1e1t')">Translate task</button></div>
+          <p><strong>Exercise 1.</strong> Choose the correct form.</p>
+          <p id="u1e1t" class="translation-note">Выберите правильную форму.</p>
+          <ol>
+            <li>We <select id="u1e1a"><option>read</option><option>reads</option></select> a drawing.</li>
+            <li>The engineer <select id="u1e1b"><option>check</option><option>checks</option></select> a thread.</li>
+            <li>The tool <select id="u1e1c"><option>rotate</option><option>rotates</option></select> clockwise.</li>
+            <li>I <select id="u1e1d"><option>measure</option><option>measures</option></select> a diameter.</li>
+            <li>The washer <select id="u1e1e"><option>fit</option><option>fits</option></select> the part.</li>
+          </ol>
+          <button onclick="checkU1E1()">Check</button> <span id="u1e1res"></span>
+        </div>
+        <div class="card">
+          <div class="task-tools"><button onclick="toggleTrans('u1e2t')">Translate task</button></div>
+          <p><strong>Exercise 2.</strong> Make negative.</p>
+          <p id="u1e2t" class="translation-note">Сделайте отрицательные предложения.</p>
+          <p>1. We verify a size. <input id="u1e2a" type="text"></p>
+          <p>2. The tool rotates. <input id="u1e2b" type="text"></p>
+          <p>3. He checks a note. <input id="u1e2c" type="text"></p>
+          <button onclick="checkContains(['u1e2a','do not','u1e2b','does not','u1e2c','does not'],'u1e2res')">Check</button> <span id="u1e2res"></span>
+        </div>
+        <div class="card"><div class="task-tools"><button onclick="toggleTrans('u1e3t')">Translate task</button></div><p id="u1e3t" class="translation-note">Составьте вопросы из слов.</p><strong>Exercise 3.</strong> Make questions.<br><input id="u1e3a" type="text" placeholder="Do you read a drawing?"><br><input id="u1e3b" type="text" placeholder="Does the tool rotate?"><br><input id="u1e3c" type="text" placeholder="Does the engineer check a note?"><br><button onclick="checkContains(['u1e3a','do you','u1e3b','does the tool','u1e3c','does the engineer'],'u1e3res')">Check</button> <span id="u1e3res"></span></div>
+        <div class="card"><div class="task-tools"><button onclick="toggleTrans('u1e4t')">Translate task</button></div><p id="u1e4t" class="translation-note">Вставьте артикль a или an.</p><strong>Exercise 4.</strong> Write a or an.<br><input id="u1e4a" type="text" placeholder="a"><input id="u1e4b" type="text" placeholder="an"><input id="u1e4c" type="text" placeholder="an"><input id="u1e4d" type="text" placeholder="a"><br><button onclick="checkExact(['u1e4a','a','u1e4b','an','u1e4c','an','u1e4d','a'],'u1e4res')">Check</button> <span id="u1e4res"></span></div>
+        <div class="card"><div class="task-tools"><button onclick="toggleTrans('u1e5t')">Translate task</button></div><p id="u1e5t" class="translation-note">Напишите форму множественного числа.</p><strong>Exercise 5.</strong> Write the plural.<br><input id="u1e5a" type="text" placeholder="threads"><input id="u1e5b" type="text" placeholder="washers"><input id="u1e5c" type="text" placeholder="bodies"><input id="u1e5d" type="text" placeholder="boxes"><br><button onclick="checkExact(['u1e5a','threads','u1e5b','washers','u1e5c','bodies','u1e5d','boxes'],'u1e5res')">Check</button> <span id="u1e5res"></span></div>
+        <div class="card" id="u1e6card"><div class="task-tools"><button onclick="toggleTrans('u1e6t')">Translate task</button></div><p id="u1e6t" class="translation-note">Соедините английское слово и русский перевод.</p><strong>Exercise 6.</strong> Match English to Russian.</p><p class="desktop-match-row">thread = <select id="u1e6a"><option>резьба</option><option>чертёж</option></select> | washer = <select id="u1e6b"><option>шайба</option><option>диаметр</option></select></p><p class="touch-task-hint">Tap an English word, then tap the Russian translation.</p><div class="tap-match-mobile" id="u1e6tap" data-result="u1e6res" data-check="u1e6"></div><button onclick="checkU1E6()">Check</button> <span id="u1e6res"></span></div>
+      </article>
+
+      <article class="page" data-title="Unit 1 Quick Check">
+        <h2>Unit 1 — Quick Check & Speaking</h2>
+        <div class="card progress-check">
+          <h3>Progress Check</h3>
+          <p>Can you use Present Simple, a/an, and plurals?</p>
+          <p class="ru-support">Вы умеете использовать Present Simple, a/an и множественное число?</p>
+          <p>1. The engineer <select id="u1qc1"><option>read</option><option>reads</option></select> a note.</p>
+          <p>2. We do <select id="u1qc2"><option>not</option><option>no</option></select> change the size.</p>
+          <p>3. <select id="u1qc3"><option>Do</option><option>Does</option></select> you check a thread?</p>
+          <button onclick="checkU1QC()">Check progress</button> <span id="u1qcres"></span>
+        </div>
+        <div class="card">
+          <h3>Mini Speaking Task</h3>
+          <p>Say 3 short sentences:</p>
+          <ul><li>This is a drawing.</li><li>We check the diameter.</li><li>The tool rotates clockwise.</li></ul>
+          <p class="ru-support">Проговорите 3 коротких предложения вслух.</p>
+          <button onclick="startTimer('u1timer',20)">Start speaking timer (20s)</button>
+          <span id="u1timer"></span>
+          <button onclick="markDone('u1')">I said it</button>
+          <span id="u1done"></span>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 2 Intro">
+        <div class="unit-banner u2">UNIT 2</div>
+        <h2>this / that / these / those • there is / there are • have / has</h2>
+        <p class="ru-support"><strong>This / That • There is / There are • Have / Has</strong></p>
+        <p><strong>Unit goal:</strong> Point to objects, describe what is on the drawing, and say what a part has.</p>
+        <p class="ru-support"><strong>Цель:</strong> Показываем объекты, описываем, что есть на чертеже, и говорим, что имеет деталь.</p>
+        <div class="card unit2">
+          <p><strong>You will learn:</strong> this/that/these/those • there is/are • have/has</p>
+          <p class="ru-support"><strong>Изучаем:</strong> указательные слова • there is/are • have/has</p>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 2 Vocabulary">
+        <h2>Unit 2 Vocabulary</h2>
+        <div class="grid-2" id="u2Vocab"></div>
+      </article>
+
+      <article class="page" data-title="Unit 2 Rule Cards">
+        <h2>Unit 2 — Rule Cards</h2>
+        <div class="card rule-card unit2">
+          <h4>Rule 1: this / that / these / those</h4>
+          <button onclick="toggleRule('u2r1')">Show rule</button>
+          <div id="u2r1" class="hidden">
+            <p>Use <strong>this</strong> and <strong>these</strong> for near objects. Use <strong>that</strong> and <strong>those</strong> for far objects.</p>
+            <p class="ru-support">This/these — близко. That/those — далеко.</p>
+            <p>This part is clean. • That note is important. • These washers are ready. • Those holes are small.</p>
+          </div>
+        </div>
+        <div class="card rule-card unit2">
+          <h4>Rule 2: There is / There are</h4>
+          <button onclick="toggleRule('u2r2')">Show rule</button>
+          <div id="u2r2" class="hidden">
+            <p>Use <strong>there is</strong> for one object. Use <strong>there are</strong> for two or more objects.</p>
+            <p class="ru-support">There is — один объект. There are — два или больше.</p>
+            <p>There is a thread on the part. • There is a note on page 3. • There are two washers in the box. • There are three holes in the panel.</p>
+          </div>
+        </div>
+        <div class="card rule-card unit2">
+          <h4>Rule 3: have / has</h4>
+          <button onclick="toggleRule('u2r3')">Show rule</button>
+          <div id="u2r3" class="hidden">
+            <p>Use <strong>have</strong> with I / we / they. Use <strong>has</strong> with he / she / it.</p>
+            <p class="ru-support">Have — с I / we / they. Has — с he / she / it.</p>
+            <p>I have a drawing. • We have a clean part. • The tool has a handle. • The stud-bolt has a thread.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 2 Workbook">
+        <h2>Unit 2 Workbook</h2>
+        <div class="card"><div class="task-tools"><button onclick="toggleTrans('u2e1t')">Translate task</button></div><p id="u2e1t" class="translation-note">Выберите this/that/these/those.</p><p><strong>Exercise 1.</strong> Choose this/that/these/those.</p><p>1. <input id="u2e1a" type="text"> washer here is clean.</p><p>2. <input id="u2e1b" type="text"> holes there are small.</p><p>3. <input id="u2e1c" type="text"> note on this page is important.</p><p>4. <input id="u2e1d" type="text"> parts on the far table are ready.</p><button onclick="checkExact(['u2e1a','this','u2e1b','those','u2e1c','this','u2e1d','those'],'u2e1res')">Check</button> <span id="u2e1res"></span></div>
+        <div class="card"><div class="task-tools"><button onclick="toggleTrans('u2e2t')">Translate task</button></div><p id="u2e2t" class="translation-note">Вставьте is или are.</p><p><strong>Exercise 2.</strong> Write is or are.</p><p>1. There <input id="u2e2a" type="text"> a thread on the part.</p><p>2. There <input id="u2e2b" type="text"> two notes on the page.</p><p>3. There <input id="u2e2c" type="text"> a handle on the tool.</p><p>4. There <input id="u2e2d" type="text"> three holes here.</p><button onclick="checkExact(['u2e2a','is','u2e2b','are','u2e2c','is','u2e2d','are'],'u2e2res')">Check</button> <span id="u2e2res"></span></div>
+        <div class="card"><div class="task-tools"><button onclick="toggleTrans('u2e3t')">Translate task</button></div><p id="u2e3t" class="translation-note">Вставьте have или has.</p><p><strong>Exercise 3.</strong> Complete with have or has.</p><p>1. We <input id="u2e3a" type="text"> a drawing.</p><p>2. The part <input id="u2e3b" type="text"> a hole.</p><p>3. The tool <input id="u2e3c" type="text"> a handle.</p><p>4. I <input id="u2e3d" type="text"> a note.</p><button onclick="checkExact(['u2e3a','have','u2e3b','has','u2e3c','has','u2e3d','have'],'u2e3res')">Check</button> <span id="u2e3res"></span></div>
+        <div class="card"><div class="task-tools"><button onclick="toggleTrans('u2e4t')">Translate task</button></div><p id="u2e4t" class="translation-note">Отметьте True или False.</p><p><strong>Exercise 4.</strong> True / False.</p><p>There are two washers in the box. <select id="u2e4a"><option>true</option><option>false</option></select></p><p>That and those are for near objects. <select id="u2e4b"><option>false</option><option>true</option></select></p><button onclick="checkExact(['u2e4a','true','u2e4b','false'],'u2e4res')">Check</button> <span id="u2e4res"></span></div>
+      </article>
+
+      <article class="page" data-title="Unit 2 Quick Check">
+        <h2>Unit 2 — Quick Check & Speaking</h2>
+        <div class="card progress-check unit2">
+          <h3>Progress Check</h3>
+          <p>1. <select id="u2qc1"><option>This</option><option>Those</option></select> washer here is clean.</p>
+          <p>2. There <select id="u2qc2"><option>is</option><option>are</option></select> two notes on the page.</p>
+          <p>3. The tool <select id="u2qc3"><option>have</option><option>has</option></select> a handle.</p>
+          <button onclick="checkU2QC()">Check progress</button> <span id="u2qcres"></span>
+        </div>
+        <div class="card unit2">
+          <h3>Mini Speaking Task</h3>
+          <p>Say 4 short phrases:</p>
+          <ul>
+            <li>This is a part.</li>
+            <li>There is a thread.</li>
+            <li>The tool has a handle.</li>
+            <li>Those washers are clean.</li>
+          </ul>
+          <p class="ru-support">Проговорите 4 короткие фразы.</p>
+          <button onclick="startTimer('u2timer',20)">Start speaking timer (20s)</button> <span id="u2timer"></span>
+          <button onclick="markDone('u2')">I said it</button> <span id="u2done"></span>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 3 Intro">
+        <div class="unit-banner u3">UNIT 3</div>
+        <h2>Imperatives • First / Then / Finally • Prepositions • can / can't</h2>
+        <p class="ru-support"><strong>Команды • Шаги • Предлоги • Can / Can't</strong></p>
+        <p><strong>Unit goal:</strong> Give simple technical instructions and describe position.</p>
+        <p class="ru-support"><strong>Цель:</strong> Даем простые технические команды и описываем положение детали.</p>
+        <div class="card unit3">
+          <p><strong>You will learn:</strong> imperatives • step words • in/on/into/under/between • can/can't</p>
+          <p class="ru-support"><strong>Изучаем:</strong> повелительное наклонение • First/Then/Finally • предлоги • can/can't</p>
+        </div>
+        <div class="card unit3">
+          <h3>Installation Sequence — First / Then / Finally</h3>
+          <p class="interactive-hint">Tap a part in the sequence — it speaks and wiggles. Try First, Then, Finally, or any component. <span class="speech-note">British English / en-GB</span></p>
+          <p class="ru-support">Нажмите на деталь в схеме — она «оживёт» и произнесёт слово. Попробуйте First, Then, Finally или любую деталь.</p>
+          <div class="interactive-slide" data-slide="installation">
+            <div class="interactive-visual interactive-layout slide-layout">
+              <div class="visual-column">
+                <div class="visual-frame" data-slide="installation">
+                  <img src="./images/installation-handout.png" alt="Panel fastener technical illustration — installation sequence">
+                  <div class="image-branding-patch image-branding-patch--installation" aria-hidden="true"></div>
+                  <div class="precise-marker medium" aria-hidden="true"></div>
+                  <div class="hotspot-layer zone-layer no-print"></div>
+                </div>
+                <div class="mobile-term-preview" data-preview="installation" aria-live="polite"></div>
+              </div>
+              <div class="term-panel right-sidebar component-panel" data-slide="installation"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 3 Vocabulary">
+        <h2>Unit 3 Vocabulary</h2>
+        <div class="grid-2" id="u3Vocab"></div>
+      </article>
+
+      <article class="page" data-title="Unit 3 Rule Cards">
+        <h2>Unit 3 — Rule Cards</h2>
+        <div class="card rule-card unit3">
+          <h4>Rule 1: Imperative = command / instruction</h4>
+          <button onclick="toggleRule('u3r1')">Show rule</button>
+          <div id="u3r1" class="hidden">
+            <p>Use the verb without <strong>to</strong> and without a subject.</p>
+            <p class="ru-support">Команда строится просто: глагол без to и без подлежащего.</p>
+            <p>Insert a cap into a collet. • Tighten the handle. • Rotate the tool clockwise. • Remove the part carefully.</p>
+          </div>
+        </div>
+        <div class="card rule-card unit3">
+          <h4>Rule 2: First / Then / Finally</h4>
+          <button onclick="toggleRule('u3r2')">Show rule</button>
+          <div id="u3r2" class="hidden">
+            <p>Use these words to order technical steps.</p>
+            <p class="ru-support">Используем эти слова, чтобы выстроить шаги процесса.</p>
+            <p>First, insert a cap. • Then, tighten the handle. • Finally, remove the tool.</p>
+          </div>
+        </div>
+        <div class="card rule-card unit3">
+          <h4>Rule 3: Prepositions</h4>
+          <button onclick="toggleRule('u3r3')">Show rule</button>
+          <div id="u3r3" class="hidden">
+            <p>Use: <strong>in</strong> • <strong>on</strong> • <strong>into</strong> • <strong>under</strong> • <strong>between</strong></p>
+            <p>in a box • on a surface • into a hole • under a washer • between two parts</p>
+            <p class="ru-support">Предлоги показывают положение детали.</p>
+          </div>
+        </div>
+        <div class="card rule-card unit3">
+          <h4>Rule 4: can / can't</h4>
+          <button onclick="toggleRule('u3r4')">Show rule</button>
+          <div id="u3r4" class="hidden">
+            <p><strong>Can</strong> shows possibility. <strong>Can't</strong> shows that an action is not possible.</p>
+            <p class="ru-support">Can — можно / может. Can't — нельзя / не может.</p>
+            <p>The tool can rotate. • The part can fit the hole. • The washer can't hold the cap alone. • We can verify the size.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 3 Workbook">
+        <h2>Unit 3 Workbook</h2>
+        <div class="card" id="u3e1card">
+          <div class="task-tools"><button onclick="toggleTrans('u3e1t')">Translate task</button></div>
+          <p id="u3e1t" class="translation-note">Поставьте шаги в правильном порядке.</p>
+          <p><strong>Exercise 1.</strong> Put the steps in order (1-3).</p>
+          <div class="desktop-order-fields">
+            <p>Finally, remove the tool. <input id="u3e1a" type="text" placeholder="3" inputmode="numeric"></p>
+            <p>First, insert a cap. <input id="u3e1b" type="text" placeholder="1" inputmode="numeric"></p>
+            <p>Then, rotate the handle. <input id="u3e1c" type="text" placeholder="2" inputmode="numeric"></p>
+          </div>
+          <p class="touch-task-hint">Tap each step in the correct order (1 → 2 → 3).</p>
+          <div class="tap-order-mobile" id="u3e1tap" data-result="u3e1res"></div>
+          <button onclick="checkU3E1()">Check</button> <span id="u3e1res"></span>
+        </div>
+        <div class="card">
+          <div class="task-tools"><button onclick="toggleTrans('u3e2t')">Translate task</button></div>
+          <p id="u3e2t" class="translation-note">Выберите правильный предлог.</p>
+          <p><strong>Exercise 2.</strong> Choose the correct preposition.</p>
+          <p>1. Put the cap <input id="u3e2a" type="text"> the collet.</p>
+          <p>2. The washer is <input id="u3e2b" type="text"> the head and the cap.</p>
+          <p>3. The note is <input id="u3e2c" type="text"> the page.</p>
+          <p>4. The part is <input id="u3e2d" type="text"> the box.</p>
+          <button onclick="checkExact(['u3e2a','into','u3e2b','between','u3e2c','on','u3e2d','in'],'u3e2res')">Check</button> <span id="u3e2res"></span>
+        </div>
+        <div class="card">
+          <div class="task-tools"><button onclick="toggleTrans('u3e3t')">Translate task</button></div>
+          <p id="u3e3t" class="translation-note">Вставьте can или can't.</p>
+          <p><strong>Exercise 3.</strong> Complete with can or can't.</p>
+          <p>1. The tool <input id="u3e3a" type="text"> rotate.</p>
+          <p>2. The part <input id="u3e3b" type="text"> meet the size now.</p>
+          <p>3. We <input id="u3e3c" type="text"> insert the cap.</p>
+          <button onclick="checkExact(['u3e3a','can','u3e3b','can\'t','u3e3c','can'],'u3e3res')">Check</button> <span id="u3e3res"></span>
+        </div>
+        <div class="card">
+          <div class="task-tools"><button onclick="toggleTrans('u3e4t')">Translate task</button></div>
+          <p id="u3e4t" class="translation-note">Соотнесите команду с переводом.</p>
+          <p><strong>Exercise 4.</strong> Match command to Russian.</p>
+          <p class="desktop-match-row">Insert the cap = <select id="u3e4a"><option>Вставьте колпачок</option><option>Снимите деталь</option></select></p>
+          <p class="desktop-match-row">Remove the part = <select id="u3e4b"><option>Поверните рукоятку</option><option>Снимите деталь</option></select></p>
+          <p class="touch-task-hint">Tap an English command, then tap the Russian translation.</p>
+          <div class="tap-match-mobile" id="u3e4tap" data-result="u3e4res" data-check="u3e4"></div>
+          <button onclick="checkU3E4()">Check</button> <span id="u3e4res"></span>
+        </div>
+      </article>
+
+      <article class="page" data-title="Unit 3 Quick Check">
+        <h2>Unit 3 — Quick Check & Speaking</h2>
+        <div class="card progress-check unit3">
+          <h3>Progress Check</h3>
+          <p>1. Put the cap <select id="u3qc1"><option>in</option><option>into</option></select> the collet.</p>
+          <p>2. The washer is <select id="u3qc2"><option>between</option><option>on</option></select> the head and the cap.</p>
+          <p>3. The tool <select id="u3qc3"><option>can</option><option>can't</option></select> rotate.</p>
+          <button onclick="checkU3QC()">Check progress</button> <span id="u3qcres"></span>
+        </div>
+        <div class="card unit3">
+          <h3>Mini Speaking Task</h3>
+          <p>Say 4 short phrases:</p>
+          <ul>
+            <li>Insert the cap.</li>
+            <li>Rotate the handle.</li>
+            <li>Put the part in the box.</li>
+            <li>The tool can rotate.</li>
+          </ul>
+          <p class="ru-support">Проговорите 4 короткие фразы-команды.</p>
+          <button onclick="startTimer('u3timer',20)">Start speaking timer (20s)</button> <span id="u3timer"></span>
+          <button onclick="markDone('u3')">I said it</button> <span id="u3done"></span>
+        </div>
+      </article>
+
+      <article class="page" data-title="Final Revision">
+        <h2>Final Revision</h2>
+        <div class="card">
+          <h3>Mixed Practice A</h3>
+          <ol>
+            <li>The engineer <input id="fra1" type="text"> the drawing. (read / reads)</li>
+            <li>The tool <input id="fra2" type="text"> not rotate. (do / does)</li>
+            <li><input id="fra3" type="text"> the washer fit? (Do / Does)</li>
+            <li>There <input id="fra4" type="text"> a note on page 3. (is / are)</li>
+            <li>The part <input id="fra5" type="text"> a thread. (have / has)</li>
+            <li>Put the cap <input id="fra6" type="text"> the collet. (in / into)</li>
+            <li>The tool <input id="fra7" type="text"> rotate. (can / can't)</li>
+          </ol>
+          <button onclick="checkExact(['fra1','reads','fra2','does','fra3','does','fra4','is','fra5','has','fra6','into','fra7','can'],'frares')">Check</button> <span id="frares"></span>
+        </div>
+        <div class="card">
+          <h3>Mixed Speaking</h3>
+          <p>Say 5 short phrases:</p>
+          <ol><li>Name a part.</li><li>Name one element.</li><li>Say one routine action.</li><li>Say one instruction.</li><li>Ask one simple question.</li></ol>
+          <p><strong>Model:</strong> This is a stud-bolt. It has a thread. We check the diameter. Insert a cap into a collet. Does the tool rotate?</p>
+        </div>
+      </article>
+
+      <article class="page" data-title="Speaking Tasks">
+        <h2>Speaking Tasks</h2>
+        <div class="card speaker-panel">
+          <h3>Sound Focus: British /θ/</h3>
+          <p>thread /θred/</p>
+          <p>through /θruː/</p>
+          <p>Practice: thread • a thread • through • through the hole • The thread is on the part.</p>
+          <p class="ru-support">Звук /θ/ произносится с языком между зубами. Не заменяйте его на /с/ или /т/.</p>
+        </div>
+      </article>
+
+      <article class="page" data-title="Teacher Notes">
+        <h2>Teacher Notes</h2>
+        <div class="card teacher-box"><h3>Unit 1</h3><p>Objective: Present Simple facts and checks.</p><p>10-minute flow: vocab (3) → rules (3) → workbook quick pass (3) → speaking (1).</p><p>Questions: Do we use -s with "we"? What is plural of body?</p><p>Expected answers: No; bodies.</p></div>
+        <div class="card teacher-box"><h3>Unit 2</h3><p>Objective: identify near/far objects and describe drawing items.</p><p>10-minute flow: pointing game (2) → there is/are drill (3) → have/has drill (3) → speaking (2).</p><p>Questions: Which word for far plural? Have or has with "tool"?</p><p>Expected answers: those; has.</p></div>
+        <div class="card teacher-box"><h3>Unit 3</h3><p>Objective: give instructions and positions.</p><p>10-minute flow: imperative board race (3) → steps order (3) → prepositions mini-lab (2) → can/can't check (2).</p><p>Questions: "Put cap ___ collet?" "Tool ___ rotate?"</p><p>Expected answers: into; can.</p></div>
+      </article>
+
+      <article class="page" data-title="Answer Key">
+        <h2>Answer Key</h2>
+        <div class="card"><h3>Unit 1</h3><p>Ex1: 1 read, 2 checks, 3 rotates, 4 measure, 5 fits</p><p>Ex2: We do not verify a size. The tool does not rotate. He does not check a note.</p><p>Ex3: Do you read a drawing? Does the tool rotate? Does the engineer check a note?</p><p>Ex4: a, an, an, a</p><p>Ex5: threads, washers, bodies, boxes</p></div>
+        <div class="card"><h3>Unit 2</h3><p>Ex1: This, Those, This, Those</p><p>Ex2: is, are, is, are</p><p>Ex3: have, has, has, have</p></div>
+        <div class="card"><h3>Unit 3</h3><p>Ex1: First insert a cap; Then rotate handle; Finally remove tool.</p><p>Ex2: into, between, on, in</p><p>Ex3: can, can't, can</p></div>
+        <div class="card"><h3>Final Revision</h3><p>reads, does, Does, is, has, into, can</p></div>
+      </article>
+
+      <article class="page back-cover-page" data-title="Back Cover">
+        <h2>Back Cover</h2>
+        <div class="card">
+          <h3>About this booklet</h3>
+          <p class="ru-support">Авторское учебное пособие для начинающих конструкторов и техспециалистов.</p>
+          <p>A premium, classroom-ready starter package for technical English practice (Units 1–3), with visual rules and workbook checks.</p>
+        </div>
+      </article>
+    </section>
+
+    <div class="control-row desktop-nav">
+      <button id="prevBtn" type="button" aria-label="Previous page">Previous</button>
+      <div class="page-indicator" id="pageIndicator"></div>
+      <button id="nextBtn" type="button" aria-label="Next page">Next</button>
+    </div>
+  </main>
+
+  <nav class="mobile-nav mobile-only no-print" aria-label="Book navigation">
+    <button type="button" id="mobilePrevBtn" aria-label="Previous page">Previous</button>
+    <div class="mobile-nav-indicator" id="mobilePageIndicator">Page 1</div>
+    <button type="button" id="mobileNextBtn" aria-label="Next page">Next</button>
+  </nav>
+
+  <div id="vocabModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <h3 id="mWord"></h3>
+      <p id="mIpa"></p>
+      <p id="mRu" class="ru-support"></p>
+      <p id="mEx" class="small"></p>
+      <button onclick="speakWord()">Listen</button>
+      <span class="speech-note">British English / en-GB</span>
+      <p class="small speech-note" id="voiceNote">British voice depends on browser voice availability.</p>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function migrateTeStorage() {
+      [
+        ['rt149_last_page', 'te_last_page'],
+        ['rt149_ru_translation', 'te_ru_translation'],
+        ['rt149_progress', 'te_progress'],
+        ['rt149_completed_u1', 'te_completed_u1'],
+        ['rt149_completed_u2', 'te_completed_u2'],
+        ['rt149_completed_u3', 'te_completed_u3']
+      ].forEach(([oldKey, newKey]) => {
+        const val = localStorage.getItem(oldKey);
+        if (val !== null && localStorage.getItem(newKey) === null) {
+          localStorage.setItem(newKey, val);
+        }
+      });
+    }
+    migrateTeStorage();
+
+    const pages = Array.from(document.querySelectorAll('.page'));
+    const indicator = document.getElementById('pageIndicator');
+    const progressBar = document.getElementById('progressBar');
+    let pageIndex = Number(localStorage.getItem('te_last_page') || 0);
+    if (pageIndex < 0 || pageIndex >= pages.length) pageIndex = 0;
+
+    const vocabSets = {
+      u1Vocab: [
+        ["a drawing","/ə ˈdrɔːɪŋ/","чертёж","This is a drawing."],
+        ["a thread","/ə θred/","резьба","We check a thread."],
+        ["a washer","/ə ˈwɒʃə/","шайба","The washer fits."],
+        ["a diameter","/ə daɪˈæmɪtə/","диаметр","Measure a diameter."],
+        ["a collet","/ə ˈkɒlɪt/","цанга","Insert into a collet."],
+        ["a stud-bolt","/ə stʌd bəʊlt/","болт-шпилька","This is a stud-bolt."],
+        ["to read","/tə riːd/","читать","I read a note."],
+        ["to check","/tə tʃek/","проверять","We check the size."],
+        ["to measure","/tə ˈmeʒə/","измерять","I measure depth."],
+        ["to verify","/tə ˈverɪfaɪ/","проверять / подтверждать","We verify the spec."]
+      ],
+      u2Vocab: [
+        ["a part","/ə pɑːt/","деталь","This part is clean."],
+        ["a note","/ə nəʊt/","примечание","That note is important."],
+        ["a handle","/ə ˈhændl/","рукоятка","The tool has a handle."],
+        ["a hole","/ə həʊl/","отверстие","There is a hole."],
+        ["a surface","/ə ˈsɜːfɪs/","поверхность","Put it on a surface."],
+        ["to hold","/tə həʊld/","держать","This can hold the part."],
+        ["to fit","/tə fɪt/","подходить","The part fits."],
+        ["to meet","/tə miːt/","соответствовать","The part meets the size."]
+      ],
+      u3Vocab: [
+        ["a cap","/ə kæp/","колпачок","Insert a cap."],
+        ["a panel","/ə ˈpænəl/","панель","The panel has holes."],
+        ["a box","/ə bɒks/","коробка","Put it in a box."],
+        ["to insert","/tə ɪnˈsɜːt/","вставлять","Insert the cap."],
+        ["to tighten","/tə ˈtaɪtn/","затягивать","Tighten the handle."],
+        ["to rotate","/tə rəʊˈteɪt/","поворачивать","Rotate clockwise."],
+        ["to remove","/tə rɪˈmuːv/","снимать","Remove the tool."],
+        ["to place","/tə pleɪs/","размещать","Place the part on surface."]
+      ]
+    };
+
+    let currentWord = "";
+    const clickCounts = {};
+    let britishVoicesReady = false;
+
+    const interactiveItems = [
+      { id: "cap", label: "Cap", ipa: "/kæp/", ru: "колпачок", sentence: "Insert the cap into a collet.", sentenceRu: "Вставьте колпачок в цангу.", slide: "installation", mode: "term", row: "main", markerX: 14, markerY: 68, markerSize: "small", visualZones: [{ type: "main", x: 6, y: 58, w: 16, h: 22 }, { type: "exploded", x: 4, y: 74, w: 14, h: 16 }] },
+      { id: "collet", label: "Collet", ipa: "/ˈkɒlɪt/", ru: "цанга", sentence: "Insert the cap into a collet.", sentenceRu: "Вставьте колпачок в цангу.", slide: "installation", mode: "term", row: "main", markerX: 31, markerY: 66, markerSize: "medium", zone: { x: 22, y: 54, w: 18, h: 24 } },
+      { id: "handle", label: "Handle", ipa: "/ˈhændl/", ru: "рукоятка", sentence: "Tighten the handle.", sentenceRu: "Затяните рукоятку.", slide: "installation", mode: "term", row: "main", markerX: 56, markerY: 18, markerSize: "medium", zone: { x: 46, y: 6, w: 20, h: 30 } },
+      { id: "tool", label: "Tool", ipa: "/tuːl/", ru: "инструмент", sentence: "Remove the tool.", sentenceRu: "Снимите инструмент.", slide: "installation", mode: "term", row: "main", markerX: 78, markerY: 18, markerSize: "medium", zone: { x: 66, y: 4, w: 24, h: 32 } },
+      { id: "part", label: "Part", ipa: "/pɑːt/", ru: "деталь", sentence: "The part is in the box.", sentenceRu: "Деталь в коробке.", slide: "installation", mode: "term", row: "main", markerX: 48, markerY: 48, markerSize: "medium", zone: { x: 36, y: 36, w: 24, h: 24 } },
+      { id: "box", label: "Box", ipa: "/bɒks/", ru: "коробка", sentence: "Put the part in the box.", sentenceRu: "Положите деталь в коробку.", slide: "installation", mode: "term", row: "main", markerX: 86, markerY: 76, markerSize: "small", visualZones: [{ type: "main", x: 76, y: 64, w: 20, h: 24 }, { type: "exploded", x: 66, y: 74, w: 18, h: 16 }] },
+      { id: "first", label: "First", ipa: "", ru: "сначала", sentence: "Insert the cap into a collet.", sentenceRu: "Вставьте колпачок в цангу.", slide: "installation", mode: "step", row: "main", markerX: 17, markerY: 52, markerSize: "medium", zone: { x: 2, y: 32, w: 30, h: 42 } },
+      { id: "then", label: "Then", ipa: "", ru: "затем", sentence: "Tighten the handle.", sentenceRu: "Затяните рукоятку.", slide: "installation", mode: "step", row: "main", markerX: 47, markerY: 52, markerSize: "medium", zone: { x: 32, y: 32, w: 30, h: 42 } },
+      { id: "finally", label: "Finally", ipa: "", ru: "наконец", sentence: "Remove the tool.", sentenceRu: "Снимите инструмент.", slide: "installation", mode: "step", row: "main", markerX: 77, markerY: 52, markerSize: "medium", zone: { x: 62, y: 32, w: 30, h: 42 } },
+      { id: "position", label: "Position", ipa: "", ru: "положение", sentence: "Put the cap into the collet. The part is in the box.", sentenceRu: "Вставьте колпачок в цангу. Деталь в коробке.", slide: "installation", mode: "step", row: "main", markerX: 50, markerY: 85, markerSize: "medium", zone: { x: 18, y: 76, w: 64, h: 18 } },
+      { id: "stud-bolt", label: "Stud-bolt", ipa: "/stʌd bəʊlt/", ru: "болт-шпилька", sentence: "This is a stud-bolt.", sentenceRu: "Это болт-шпилька.", slide: "cutaway", mode: "term", row: "main", markerX: 42, markerY: 50, markerSize: "medium", zone: { x: 34, y: 28, w: 16, h: 44 } },
+      { id: "hex-recess", label: "Hex recess", ipa: "/heks rɪˈses/", ru: "шестигранное углубление", sentence: "There is a hex recess.", sentenceRu: "Есть шестигранное углубление.", slide: "cutaway", mode: "term", row: "main", markerX: 39, markerY: 19, markerSize: "small", zone: { x: 32, y: 12, w: 14, h: 14 } },
+      { id: "thread", label: "Thread", ipa: "/θred/", ru: "резьба", sentence: "The stud-bolt has a thread.", sentenceRu: "У болта-шпильки есть резьба.", slide: "cutaway", mode: "term", row: "main", markerX: 42, markerY: 53, markerSize: "small", zone: { x: 36, y: 42, w: 12, h: 22 } },
+      { id: "diameter", label: "Diameter", ipa: "/daɪˈæmɪtə/", ru: "диаметр", sentence: "The drawing specifies the diameter.", sentenceRu: "Чертёж задаёт диаметр.", slide: "cutaway", mode: "term", row: "main", markerX: 56, markerY: 58, markerSize: "small", zone: { x: 46, y: 50, w: 20, h: 16 } },
+      { id: "depth", label: "Depth", ipa: "/depθ/", ru: "глубина", sentence: "The drawing specifies the depth.", sentenceRu: "Чертёж задаёт глубину.", slide: "cutaway", mode: "term", row: "main", markerX: 51, markerY: 25, markerSize: "small", zone: { x: 42, y: 18, w: 18, h: 14 } },
+      { id: "panel", label: "Panel", ipa: "/ˈpænəl/", ru: "панель", sentence: "The panel has a hole.", sentenceRu: "В панели есть отверстие.", slide: "cutaway", mode: "term", row: "main", markerX: 71, markerY: 46, markerSize: "medium", visualZones: [{ type: "main", x: 56, y: 26, w: 30, h: 40 }] },
+      { id: "hole", label: "Hole", ipa: "/həʊl/", ru: "отверстие", sentence: "There is a hole in the panel.", sentenceRu: "В панели есть отверстие.", slide: "cutaway", mode: "term", row: "main", markerX: 45, markerY: 37, markerSize: "small", zone: { x: 38, y: 30, w: 14, h: 14 } },
+      { id: "section-view", label: "Section view", ipa: "/ˈsekʃən vjuː/", ru: "вид в разрезе", sentence: "This is a section view.", sentenceRu: "Это вид в разрезе.", slide: "cutaway", mode: "term", row: "main", markerX: 82, markerY: 14, markerSize: "small", zone: { x: 70, y: 4, w: 24, h: 20 } },
+      { id: "retaining-cap", label: "Retaining cap", ipa: "/rɪˈteɪnɪŋ kæp/", ru: "стопорный колпачок", sentence: "Insert the retaining cap.", sentenceRu: "Вставьте стопорный колпачок.", slide: "cutaway", mode: "term", row: "exploded", markerX: 57.5, markerY: 84, markerSize: "small", visualZones: [{ type: "exploded", x: 50, y: 78, w: 14, h: 14 }] },
+      { id: "retaining-washer", label: "Retaining washer", ipa: "/rɪˈteɪnɪŋ ˈwɒʃə/", ru: "стопорная шайба", sentence: "The retaining washer holds the cap.", sentenceRu: "Стопорная шайба удерживает колпачок.", slide: "cutaway", mode: "term", row: "exploded", markerX: 68.5, markerY: 84, markerSize: "small", visualZones: [{ type: "exploded", x: 61, y: 78, w: 14, h: 14 }] },
+      { id: "exploded-nut", label: "Hex nut", ipa: "/heks nʌt/", ru: "шестигранная гайка", sentence: "Tighten the hex nut.", sentenceRu: "Затяните шестигранную гайку.", slide: "cutaway", mode: "term", row: "exploded", markerX: 45.5, markerY: 84, markerSize: "small", visualZones: [{ type: "exploded", x: 38, y: 78, w: 14, h: 14 }] },
+      { id: "exploded-washer", label: "Washer", ipa: "/ˈwɒʃə/", ru: "шайба", sentence: "Place the washer on the stud-bolt.", sentenceRu: "Поставьте шайбу на болт-шпильку.", slide: "cutaway", mode: "term", row: "exploded", markerX: 33.5, markerY: 84, markerSize: "small", visualZones: [{ type: "exploded", x: 26, y: 78, w: 14, h: 14 }] },
+      { id: "exploded-panel", label: "Panel section", ipa: "/ˈpænəl ˈsekʃən/", ru: "участок панели", sentence: "The panel section is shown below.", sentenceRu: "Участок панели показан ниже.", slide: "cutaway", mode: "term", row: "exploded", markerX: 83, markerY: 83, markerSize: "small", visualZones: [{ type: "exploded", x: 72, y: 76, w: 20, h: 16 }] }
+    ];
+
+    const termHooks = {
+      cap: 'What sits in the collet before you tighten?',
+      collet: 'This grips the cap during the sequence.',
+      handle: 'Turn this to tighten the assembly.',
+      tool: 'Which tool do you remove at the end?',
+      part: 'Where does the part go before storage?',
+      box: 'Safe storage for the part.',
+      'stud-bolt': 'The main fastener through the panel.',
+      'hex-recess': 'Look for the hex shape on top.',
+      thread: 'Spiral ridges along the shank.',
+      diameter: 'How wide is this feature?',
+      depth: 'How far does it go into the panel?',
+      panel: 'The plate with the hole.',
+      hole: 'Where does the stud-bolt pass through?',
+      'section-view': 'A cut through the assembly.',
+      'retaining-cap': 'Tap this piece in the exploded row.',
+      'retaining-washer': 'It holds the cap in place.',
+      'exploded-nut': 'Find the nut in the bottom row.',
+      'exploded-washer': 'A flat ring in the stack.',
+      'exploded-panel': 'Panel detail shown separately.'
+    };
+
+    function getBritishVoice() {
+      const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+      return voices.find(v => v.lang === "en-GB" && /female|Google UK English Female|Serena|Sonia|Kate|Daniel/i.test(v.name))
+        || voices.find(v => v.lang === "en-GB")
+        || voices.find(v => v.lang && v.lang.startsWith("en"))
+        || null;
+    }
+
+    function getNextRate(termId) {
+      clickCounts[termId] = (clickCounts[termId] || 0) + 1;
+      return clickCounts[termId] % 2 === 0 ? 0.85 : 1.0;
+    }
+
+    function speakBritish(text, termId) {
+      if (!text || !window.speechSynthesis) return;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-GB";
+      utterance.rate = getNextRate(termId);
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      const voice = getBritishVoice();
+      if (voice) utterance.voice = voice;
+      const start = () => window.speechSynthesis.speak(utterance);
+      if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+        window.speechSynthesis.cancel();
+        setTimeout(start, 60);
+      } else {
+        start();
+      }
+    }
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        britishVoicesReady = !!getBritishVoice();
+        const note = document.getElementById('voiceNote');
+        if (note && !britishVoicesReady) {
+          note.textContent = 'British voice depends on browser voice availability.';
+        } else if (note) {
+          note.textContent = 'British English voice ready.';
+        }
+      };
+      window.speechSynthesis.getVoices();
+    }
+
+    const slideState = {};
+
+    function getItem(id) {
+      return interactiveItems.find(item => item.id === id);
+    }
+
+    function getItemsForSlide(slide) {
+      return interactiveItems.filter(item => item.slide === slide);
+    }
+
+    function getZone(item) {
+      if (item.zone) return { ...item.zone };
+      const size = item.row === 'exploded' ? 12 : 10;
+      const cx = item.markerX != null ? item.markerX : 50;
+      const cy = item.markerY != null ? item.markerY : 50;
+      return { x: cx - size / 2, y: cy - size / 2, w: size, h: size };
+    }
+
+    function getVisualZones(item) {
+      if (item.visualZones && item.visualZones.length) {
+        return item.visualZones.map(vz => ({
+          type: vz.type || 'main',
+          x: vz.x,
+          y: vz.y,
+          w: vz.w,
+          h: vz.h
+        }));
+      }
+      const z = getZone(item);
+      return [{
+        type: item.row === 'exploded' ? 'exploded' : 'main',
+        x: z.x,
+        y: z.y,
+        w: z.w,
+        h: z.h
+      }];
+    }
+
+    function getMarkerPoint(item, zoneType) {
+      if (zoneType) {
+        const match = getVisualZones(item).find(vz => vz.type === zoneType);
+        if (match) {
+          return { x: match.x + match.w / 2, y: match.y + match.h / 2 };
+        }
+      }
+      if (item.markerX != null && item.markerY != null) {
+        return { x: item.markerX, y: item.markerY };
+      }
+      const z = getZone(item);
+      return { x: z.x + z.w / 2, y: z.y + z.h / 2 };
+    }
+
+    function applyZoneToElement(el, zone, expandTouch) {
+      let { x, y, w, h } = zone;
+      if (expandTouch && isMobileViewport()) {
+        const min = 11;
+        if (w < min) {
+          x = Math.max(0, x - (min - w) / 2);
+          w = min;
+        }
+        if (h < min) {
+          y = Math.max(0, y - (min - h) / 2);
+          h = min;
+        }
+      }
+      el.style.left = x + '%';
+      el.style.top = y + '%';
+      el.style.width = w + '%';
+      el.style.height = h + '%';
+    }
+
+    function positionPreciseMarker(frame, item, zoneType) {
+      const marker = frame.querySelector('.precise-marker');
+      if (!marker) return;
+      if (!item) {
+        marker.classList.remove('show', 'small', 'medium', 'large', 'animate');
+        marker.setAttribute('aria-hidden', 'true');
+        return;
+      }
+      const pt = getMarkerPoint(item, zoneType);
+      const size = item.markerSize || 'medium';
+      marker.className = 'precise-marker show ' + size;
+      marker.style.left = pt.x + '%';
+      marker.style.top = pt.y + '%';
+      marker.style.width = '';
+      marker.style.height = '';
+      marker.setAttribute('aria-hidden', 'false');
+      triggerMarkerWiggle(marker);
+    }
+
+    function triggerMarkerWiggle(markerEl) {
+      if (!markerEl) return;
+      markerEl.classList.remove('animate');
+      void markerEl.offsetWidth;
+      markerEl.classList.add('animate');
+      markerEl.addEventListener('animationend', () => markerEl.classList.remove('animate'), { once: true });
+    }
+
+    function triggerZoneWiggle(zoneEl) {
+      if (!zoneEl) return;
+      zoneEl.classList.remove('animate');
+      void zoneEl.offsetWidth;
+      zoneEl.classList.add('animate');
+      zoneEl.addEventListener('animationend', () => zoneEl.classList.remove('animate'), { once: true });
+    }
+
+    function isMobileViewport() {
+      return window.matchMedia('(max-width: 767px)').matches;
+    }
+
+    function updateMobileTermPreview(slide, item) {
+      const preview = document.querySelector(`.mobile-term-preview[data-preview="${slide}"]`);
+      if (!preview) return;
+      if (!item || !isMobileViewport()) {
+        preview.classList.remove('is-visible');
+        preview.innerHTML = '';
+        return;
+      }
+      const ipaLine = item.ipa ? `<span class="term-card-ipa">${item.ipa}</span>` : '';
+      const ruLine = item.ru ? `<span class="term-card-ru ru-support">${item.ru}</span>` : '';
+      const sentenceLine = item.sentence ? `<span class="term-card-sentence">${item.sentence}</span>` : '';
+      preview.classList.add('is-visible');
+      preview.innerHTML = `<span class="term-card-title">${item.label}</span>${ipaLine}${ruLine}${sentenceLine}`;
+    }
+
+    function selectInteractiveTerm(slide, termId, options) {
+      const opts = options || {};
+      const state = slideState[slide];
+      if (!state) return;
+      const item = getItem(termId);
+      if (!item) return;
+      state.activeId = termId;
+
+      const zones = state.frame.querySelectorAll('.component-zone');
+      zones.forEach(btn => {
+        const isActive = btn.dataset.termId === termId;
+        btn.classList.toggle('active', isActive);
+        btn.classList.toggle('selected-component', isActive);
+      });
+      state.panel.querySelectorAll('.term-card').forEach(card => {
+        card.classList.toggle('active', card.dataset.termId === termId);
+      });
+
+      const wiggleTarget = opts.sourceZone
+        || state.frame.querySelector(`.component-zone.active[data-term-id="${termId}"]`)
+        || state.frame.querySelector(`.component-zone[data-term-id="${termId}"]`);
+      if (wiggleTarget) {
+        triggerZoneWiggle(wiggleTarget);
+      }
+
+      const zoneType = opts.sourceZone ? opts.sourceZone.dataset.zoneType : null;
+      positionPreciseMarker(state.frame, item, zoneType);
+
+      if (opts.speak === false) {
+        /* highlight only */
+      } else if (opts.speakSentence) {
+        speakBritish(item.sentence, termId + '-sentence');
+      } else if (item.mode === 'step') {
+        speakBritish(item.sentence, termId);
+      } else {
+        speakBritish(item.label, termId);
+      }
+
+      updateMobileTermPreview(slide, item);
+      const activeCard = state.panel.querySelector('.term-card.active');
+      if (activeCard) {
+        if (isMobileViewport()) {
+          activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        const frameCol = state.frame.closest('.visual-column');
+        if (frameCol) {
+          frameCol.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+
+    function buildTermCard(item, slide) {
+      const card = document.createElement('div');
+      card.className = 'term-card';
+      card.dataset.termId = item.id;
+
+      const body = document.createElement('button');
+      body.type = 'button';
+      body.className = 'term-card-body';
+      body.setAttribute('aria-label', item.label);
+      body.title = item.label;
+
+      const isStep = item.mode === 'step';
+      const badgeHtml = isStep ? `<span class="term-card-step-badge">${item.label}</span>` : '';
+      const titleHtml = isStep ? '' : `<span class="term-card-title">${item.label}</span>`;
+      const ipaHtml = item.ipa ? `<span class="term-card-ipa">${item.ipa}</span>` : '';
+      const ruHtml = item.ru ? `<span class="term-card-ru ru-support">${item.ru}</span>` : '';
+      const hookText = item.hook || termHooks[item.id] || '';
+      const hookHtml = hookText && !isStep ? `<span class="term-card-hook">${hookText}</span>` : '';
+      const sentenceHtml = item.sentence ? `<span class="term-card-sentence">${item.sentence}</span>` : '';
+
+      body.innerHTML = `
+        ${badgeHtml}
+        ${titleHtml}
+        ${ipaHtml}
+        ${ruHtml}
+        ${hookHtml}
+        ${sentenceHtml}
+        <div class="term-card-back">
+          <strong>${item.ru || ''}</strong>
+          <div>${item.sentenceRu || ''}</div>
+        </div>
+      `;
+
+      body.addEventListener('click', () => {
+        if (item.mode === 'step') {
+          selectInteractiveTerm(slide, item.id, { speakSentence: true });
+        } else {
+          selectInteractiveTerm(slide, item.id);
+        }
+      });
+
+      const actions = document.createElement('div');
+      actions.className = 'term-card-actions';
+
+      const listenBtn = document.createElement('button');
+      listenBtn.type = 'button';
+      listenBtn.className = 'listen-btn';
+      listenBtn.textContent = 'Listen';
+      listenBtn.setAttribute('aria-label', `Listen: ${item.label}`);
+      listenBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (item.mode === 'step') {
+          selectInteractiveTerm(slide, item.id, { speakSentence: true });
+        } else {
+          selectInteractiveTerm(slide, item.id);
+        }
+      });
+
+      const ruBtn = document.createElement('button');
+      ruBtn.type = 'button';
+      ruBtn.className = 'term-card-ru-btn';
+      ruBtn.textContent = 'RU';
+      ruBtn.setAttribute('aria-label', 'Show Russian translation');
+      ruBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        card.classList.toggle('flipped');
+      });
+
+      actions.appendChild(listenBtn);
+
+      if (item.mode === 'term') {
+        const sayBtn = document.createElement('button');
+        sayBtn.type = 'button';
+        sayBtn.className = 'say-sentence-btn';
+        sayBtn.textContent = 'Say sentence';
+        sayBtn.setAttribute('aria-label', 'Say example sentence');
+        sayBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectInteractiveTerm(slide, item.id, { speakSentence: true });
+        });
+        actions.appendChild(sayBtn);
+      }
+
+      actions.appendChild(ruBtn);
+      card.appendChild(body);
+      card.appendChild(actions);
+      return card;
+    }
+
+    function initInteractiveSlide(slide) {
+      const frame = document.querySelector(`.visual-frame[data-slide="${slide}"]`);
+      const panel = document.querySelector(`.term-panel[data-slide="${slide}"]`);
+      if (!frame || !panel || frame.dataset.interactiveVersion === '5') return;
+
+      const items = getItemsForSlide(slide);
+      const layer = frame.querySelector('.hotspot-layer');
+      layer.innerHTML = '';
+
+      items.forEach(item => {
+        getVisualZones(item).forEach(vz => {
+          const zone = document.createElement('button');
+          zone.type = 'button';
+          zone.className = 'component-zone' + (vz.type === 'exploded' ? ' exploded-item' : '');
+          zone.dataset.termId = item.id;
+          zone.dataset.zoneType = vz.type;
+          applyZoneToElement(zone, vz, true);
+          zone.setAttribute('aria-label', item.label);
+          zone.title = item.label;
+          zone.addEventListener('click', (e) => {
+            e.preventDefault();
+            selectInteractiveTerm(slide, item.id, {
+              speakSentence: item.mode === 'step',
+              sourceZone: zone
+            });
+          });
+          layer.appendChild(zone);
+        });
+      });
+
+      panel.classList.add('term-list');
+      panel.innerHTML = '';
+      const order = slide === 'installation'
+        ? ['first', 'then', 'finally', 'position', 'cap', 'collet', 'handle', 'tool', 'part', 'box']
+        : ['stud-bolt', 'hex-recess', 'thread', 'diameter', 'depth', 'panel', 'hole', 'section-view', 'retaining-cap', 'retaining-washer', 'exploded-nut', 'exploded-washer', 'exploded-panel'];
+      order.forEach(id => {
+        const item = getItem(id);
+        if (item) panel.appendChild(buildTermCard(item, slide));
+      });
+
+      slideState[slide] = { frame, panel, activeId: null };
+      frame.dataset.interactiveVersion = '5';
+    }
+
+    function initInteractiveSlides() {
+      initInteractiveSlide('cutaway');
+      initInteractiveSlide('installation');
+    }
+
+    function renderVocab() {
+      Object.entries(vocabSets).forEach(([id, words]) => {
+        const box = document.getElementById(id);
+        if (!box) return;
+        box.innerHTML = words.map((w, i) => `
+          <button type="button" class="vocab-item" onclick="openVocab('${id}',${i})" aria-label="${w[0]}" title="${w[0]}">
+            <strong>${w[0]}</strong><br>
+            <span class="small">${w[1]}</span><br>
+            <span class="ru-support">${w[2]}</span>
+          </button>
+        `).join('');
+      });
+    }
+
+    function initTapMatchTask(rootId, pairs, selectMap) {
+      const root = document.getElementById(rootId);
+      if (!root || root.dataset.ready === 'true') return;
+      root.dataset.ready = 'true';
+      let selectedEn = null;
+      const matched = new Set();
+
+      const enPool = document.createElement('div');
+      enPool.className = 'tap-match-pool';
+      enPool.setAttribute('aria-label', 'English terms');
+      const ruPool = document.createElement('div');
+      ruPool.className = 'tap-match-pool';
+      ruPool.setAttribute('aria-label', 'Russian translations');
+
+      const distractors = [];
+      pairs.forEach(([en, ru]) => {
+        enPool.appendChild(makeChip(en, en, 'en'));
+        ruPool.appendChild(makeChip(ru, ru, 'ru'));
+      });
+
+      root.appendChild(enPool);
+      root.appendChild(ruPool);
+
+      function makeChip(label, value, lang) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tap-match-chip';
+        btn.textContent = label;
+        btn.dataset.lang = lang;
+        btn.dataset.value = value;
+        btn.setAttribute('aria-label', label);
+        btn.addEventListener('click', () => onChip(btn, lang, value));
+        return btn;
+      }
+
+      function onChip(btn, lang, value) {
+        if (btn.classList.contains('matched')) return;
+        if (lang === 'en') {
+          enPool.querySelectorAll('.tap-match-chip').forEach(c => c.classList.remove('selected'));
+          btn.classList.add('selected');
+          selectedEn = value;
+          return;
+        }
+        if (!selectedEn) return;
+        const pair = pairs.find(p => p[0] === selectedEn);
+        if (!pair || pair[1] !== value) {
+          btn.classList.add('selected');
+          setTimeout(() => btn.classList.remove('selected'), 400);
+          return;
+        }
+        const enBtn = enPool.querySelector(`[data-value="${selectedEn}"]`);
+        if (enBtn) {
+          enBtn.classList.remove('selected');
+          enBtn.classList.add('matched');
+        }
+        btn.classList.add('matched');
+        matched.add(selectedEn);
+        selectedEn = null;
+        const selectId = selectMap[pair[0]];
+        const selectEl = selectId ? document.getElementById(selectId) : null;
+        if (selectEl) selectEl.value = pair[1];
+      }
+    }
+
+    function initTapOrderU3E1() {
+      const root = document.getElementById('u3e1tap');
+      if (!root || root.dataset.ready === 'true') return;
+      root.dataset.ready = 'true';
+      const steps = [
+        { text: 'First, insert a cap.', inputId: 'u3e1b', order: '1' },
+        { text: 'Then, rotate the handle.', inputId: 'u3e1c', order: '2' },
+        { text: 'Finally, remove the tool.', inputId: 'u3e1a', order: '3' }
+      ];
+      let slot = 0;
+      const slotsWrap = document.createElement('div');
+      slotsWrap.className = 'tap-order-steps';
+      const slots = [1, 2, 3].map(n => {
+        const el = document.createElement('div');
+        el.className = 'tap-order-slot';
+        el.textContent = `${n}. Tap a step below`;
+        el.dataset.slot = String(n);
+        slotsWrap.appendChild(el);
+        return el;
+      });
+      const bank = document.createElement('div');
+      bank.className = 'tap-order-bank';
+      const shuffled = [...steps].sort(() => Math.random() - 0.5);
+      shuffled.forEach(step => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tap-order-chip';
+        btn.textContent = step.text;
+        btn.setAttribute('aria-label', step.text);
+        btn.addEventListener('click', () => {
+          if (btn.disabled || slot >= 3) return;
+          const expected = steps[slot];
+          if (step.text !== expected.text) {
+            btn.style.borderColor = '#b91c1c';
+            setTimeout(() => { btn.style.borderColor = ''; }, 500);
+            return;
+          }
+          slot += 1;
+          const slotEl = slots[slot - 1];
+          slotEl.textContent = `${slot}. ${step.text}`;
+          slotEl.classList.add('filled');
+          const input = document.getElementById(step.inputId);
+          if (input) input.value = step.order;
+          btn.disabled = true;
+        });
+        bank.appendChild(btn);
+      });
+      root.appendChild(slotsWrap);
+      root.appendChild(bank);
+    }
+
+    function initMobileWorkbookTasks() {
+      initTapMatchTask('u1e6tap', [
+        ['thread', 'резьба'],
+        ['washer', 'шайба']
+      ], { thread: 'u1e6a', washer: 'u1e6b' });
+      initTapMatchTask('u3e4tap', [
+        ['Insert the cap', 'Вставьте колпачок'],
+        ['Remove the part', 'Снимите деталь']
+      ], { 'Insert the cap': 'u3e4a', 'Remove the part': 'u3e4b' });
+      initTapOrderU3E1();
+    }
+
+    function checkU3E1() {
+      checkExact(['u3e1a', '3', 'u3e1b', '1', 'u3e1c', '2'], 'u3e1res');
+    }
+
+    function checkU3E4() {
+      checkExact(['u3e4a', 'вставьте колпачок', 'u3e4b', 'снимите деталь'], 'u3e4res');
+    }
+    function openVocab(setId, idx) {
+      const [en, ipa, ru, ex] = vocabSets[setId][idx];
+      currentWord = en;
+      document.getElementById('mWord').textContent = en;
+      document.getElementById('mIpa').textContent = ipa;
+      document.getElementById('mRu').textContent = ru;
+      document.getElementById('mEx').textContent = ex;
+      document.getElementById('vocabModal').classList.add('show');
+    }
+    function closeModal() { document.getElementById('vocabModal').classList.remove('show'); }
+    function speakWord() {
+      if (!currentWord) return;
+      speakBritish(currentWord, 'modal-' + currentWord);
+    }
+    function toggleRule(id) { document.getElementById(id).classList.toggle('hidden'); }
+    function toggleTrans(id) { document.getElementById(id).classList.toggle('show'); }
+    function updatePageIndicators() {
+      const n = pageIndex + 1;
+      const total = pages.length;
+      const title = pages[pageIndex].dataset.title || '';
+      indicator.textContent = `Page ${n} / ${total} - ${title}`;
+      const mobileInd = document.getElementById('mobilePageIndicator');
+      if (mobileInd) mobileInd.textContent = `${n} / ${total} · ${title}`;
+    }
+
+    function setPage(i) {
+      pageIndex = Math.max(0, Math.min(i, pages.length - 1));
+      pages.forEach((p, idx) => p.classList.toggle('active', idx === pageIndex));
+      updatePageIndicators();
+      progressBar.style.width = `${((pageIndex + 1) / pages.length) * 100}%`;
+      localStorage.setItem('te_last_page', String(pageIndex));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelectorAll('.unit-tabs button').forEach(btn => btn.classList.remove('active-tab'));
+      if (pages[pageIndex].dataset.title !== 'Back Cover') {
+        const activeTab = [...document.querySelectorAll('.unit-tabs button')].reverse().find(b => pageIndex >= Number(b.dataset.jump));
+        if (activeTab) activeTab.classList.add('active-tab');
+      }
+    }
+    function checkU1E1() {
+      const checks = [
+        document.getElementById('u1e1a').value === 'read',
+        document.getElementById('u1e1b').value === 'checks',
+        document.getElementById('u1e1c').value === 'rotates',
+        document.getElementById('u1e1d').value === 'measure',
+        document.getElementById('u1e1e').value === 'fits'
+      ];
+      showResult('u1e1res', checks.every(Boolean));
+    }
+    function checkU1E6() {
+      const ok = document.getElementById('u1e6a').value === 'резьба' && document.getElementById('u1e6b').value === 'шайба';
+      showResult('u1e6res', ok);
+    }
+    function checkU1QC() {
+      const ok = document.getElementById('u1qc1').value === 'reads' &&
+        document.getElementById('u1qc2').value === 'not' &&
+        document.getElementById('u1qc3').value === 'Do';
+      showResult('u1qcres', ok);
+      if (ok) localStorage.setItem('te_completed_u1', 'true');
+    }
+    function checkU2QC() {
+      const ok = document.getElementById('u2qc1').value === 'This' &&
+        document.getElementById('u2qc2').value === 'are' &&
+        document.getElementById('u2qc3').value === 'has';
+      showResult('u2qcres', ok);
+      if (ok) localStorage.setItem('te_completed_u2', 'true');
+    }
+    function checkU3QC() {
+      const ok = document.getElementById('u3qc1').value === 'into' &&
+        document.getElementById('u3qc2').value === 'between' &&
+        document.getElementById('u3qc3').value === 'can';
+      showResult('u3qcres', ok);
+      if (ok) localStorage.setItem('te_completed_u3', 'true');
+    }
+    function checkExact(arr, target) {
+      let ok = true;
+      for (let i = 0; i < arr.length; i += 2) {
+        const el = document.getElementById(arr[i]);
+        const val = (el.value || '').trim().toLowerCase();
+        if (val !== arr[i + 1].toLowerCase()) ok = false;
+      }
+      showResult(target, ok);
+    }
+    function checkContains(arr, target) {
+      let ok = true;
+      for (let i = 0; i < arr.length; i += 2) {
+        const el = document.getElementById(arr[i]);
+        const val = (el.value || '').trim().toLowerCase();
+        if (!val.includes(arr[i + 1].toLowerCase())) ok = false;
+      }
+      showResult(target, ok);
+    }
+    function showResult(id, ok) {
+      const el = document.getElementById(id);
+      el.className = ok ? 'ok' : 'bad';
+      el.textContent = ok ? 'Correct / Отлично!' : 'Try again / Попробуйте еще раз';
+    }
+    function startTimer(id, seconds) {
+      const el = document.getElementById(id);
+      let s = seconds;
+      el.textContent = `${s}s`;
+      const t = setInterval(() => {
+        s -= 1;
+        el.textContent = s > 0 ? `${s}s` : 'Time!';
+        if (s <= 0) clearInterval(t);
+      }, 1000);
+    }
+    function markDone(unit) {
+      localStorage.setItem(`te_completed_${unit}`, 'true');
+      const el = document.getElementById(`${unit}done`);
+      el.className = 'ok';
+      el.textContent = 'Completed!';
+    }
+
+    const ruToggle = document.getElementById('ruToggle');
+    function setRu(state) {
+      document.body.classList.toggle('ru-on', state === 'on');
+      document.body.classList.toggle('ru-off', state === 'off');
+      ruToggle.textContent = `RU Translation: ${state === 'on' ? 'ON' : 'OFF'}`;
+      localStorage.setItem('te_ru_translation', state);
+    }
+    ruToggle.addEventListener('click', () => {
+      const next = document.body.classList.contains('ru-on') ? 'off' : 'on';
+      setRu(next);
+    });
+    const savedRu = localStorage.getItem('te_ru_translation') || 'on';
+    setRu(savedRu);
+
+    document.getElementById('prevBtn').addEventListener('click', () => setPage(pageIndex - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => setPage(pageIndex + 1));
+    document.getElementById('mobilePrevBtn').addEventListener('click', () => setPage(pageIndex - 1));
+    document.getElementById('mobileNextBtn').addEventListener('click', () => setPage(pageIndex + 1));
+    window.addEventListener('resize', () => {
+      Object.keys(slideState).forEach(slide => {
+        const state = slideState[slide];
+        if (!state || !state.activeId) return;
+        const item = getItem(state.activeId);
+        state.frame.querySelectorAll('.component-zone').forEach(zoneEl => {
+          const zItem = getItem(zoneEl.dataset.termId);
+          if (!zItem) return;
+          const zones = getVisualZones(zItem);
+          const siblings = [...state.frame.querySelectorAll(`.component-zone[data-term-id="${zItem.id}"]`)];
+          const vz = zones[siblings.indexOf(zoneEl)] || zones[0];
+          if (vz) applyZoneToElement(zoneEl, vz, true);
+        });
+        positionPreciseMarker(state.frame, item);
+        updateMobileTermPreview(slide, item);
+      });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') setPage(pageIndex - 1);
+      if (e.key === 'ArrowRight') setPage(pageIndex + 1);
+    });
+    document.querySelectorAll('[data-jump]').forEach(btn => btn.addEventListener('click', () => setPage(Number(btn.dataset.jump))));
+
+    let teacherMode = false;
+    document.getElementById('teacherModeBtn').addEventListener('click', () => {
+      teacherMode = !teacherMode;
+      document.getElementById('teacherModeBtn').textContent = `Teacher Mode: ${teacherMode ? 'ON' : 'OFF'}`;
+      if (teacherMode) setPage(21);
+    });
+
+    ['u1','u2','u3'].forEach(u => {
+      if (localStorage.getItem(`te_completed_${u}`) === 'true') {
+        const el = document.getElementById(`${u}done`);
+        if (el) { el.className = 'ok'; el.textContent = 'Completed!'; }
+      }
+    });
+
+    function akulinaMonogramSvg() {
+      return `<svg class="akulina-monogram luxury-classic" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-label="Akulina monogram" role="img">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="110" cy="110" r="88" stroke-width="1.9"/>
+    <circle cx="110" cy="110" r="78" stroke-width="0.9" opacity="0.55"/>
+    <path d="M66 154 L110 52 L154 154" stroke-width="3.8"/>
+    <path d="M83 112 H137" stroke-width="3.2"/>
+    <path d="M114 96 L149 67" stroke-width="2.6"/>
+    <path d="M113 108 L150 145" stroke-width="2.6"/>
+    <path d="M82 151 C91 142, 103 138, 110 138 C117 138, 129 142, 138 151" stroke-width="1.8"/>
+    <path d="M110 29 L110 23" stroke-width="1.6"/>
+    <path d="M104 26 C106 22, 114 22, 116 26" stroke-width="1.3"/>
+    <path d="M31 110 L25 110" stroke-width="1.5"/>
+    <path d="M195 110 L189 110" stroke-width="1.5"/>
+    <path d="M110 195 L110 189" stroke-width="1.5"/>
+    <circle cx="53" cy="53" r="1.4" fill="currentColor" stroke="none" opacity="0.75"/>
+    <circle cx="167" cy="53" r="1.4" fill="currentColor" stroke="none" opacity="0.75"/>
+    <circle cx="53" cy="167" r="1.4" fill="currentColor" stroke="none" opacity="0.75"/>
+    <circle cx="167" cy="167" r="1.4" fill="currentColor" stroke="none" opacity="0.75"/>
+  </g>
+</svg>`;
+    }
+    function footerMonogramSvg() {
+      return akulinaMonogramSvg().replace(
+        'class="akulina-monogram luxury-classic"',
+        'class="footer-monogram akulina-monogram luxury-classic"'
+      );
+    }
+
+    function brandBookPages() {
+      const pageEls = document.querySelectorAll('.page-shell .page');
+      const lastIndex = pageEls.length - 1;
+      pageEls.forEach((page, i) => {
+        const isCover = i === 0;
+        const isBack = i === lastIndex;
+
+        page.querySelectorAll('.page-watermark, .page-footer, .page-number, .cover-author-brand, .cover-logo, .back-cover-logo').forEach(el => el.remove());
+
+        let content = page.querySelector('.page-content');
+        if (!content) {
+          content = document.createElement('div');
+          content.className = 'page-content';
+          while (page.firstChild) content.appendChild(page.firstChild);
+          page.appendChild(content);
+        }
+
+        if (isCover || isBack) {
+          const wm = document.createElement('div');
+          wm.className = 'page-watermark cover-watermark';
+          wm.setAttribute('aria-hidden', 'true');
+          wm.innerHTML = akulinaMonogramSvg();
+          page.insertBefore(wm, content);
+        } else {
+          const footer = document.createElement('footer');
+          footer.className = 'page-footer';
+          footer.setAttribute('aria-hidden', 'true');
+          footer.innerHTML = footerMonogramSvg();
+          page.appendChild(footer);
+        }
+
+        if (!isCover && !isBack) {
+          const num = document.createElement('div');
+          num.className = 'page-number';
+          num.textContent = String(i + 1);
+          page.appendChild(num);
+        }
+
+        if (isCover) {
+          const logo = document.createElement('div');
+          logo.className = 'cover-logo';
+          logo.innerHTML =
+            akulinaMonogramSvg() +
+            '<div class="akulina-wordmark">AKULINA</div>' +
+            '<div class="author-submark">author-created educational material</div>' +
+            '<div class="author-submark ru-support">авторское учебное пособие</div>';
+          content.insertBefore(logo, content.firstChild);
+        }
+        if (isBack) {
+          const logo = document.createElement('div');
+          logo.className = 'back-cover-logo';
+          logo.innerHTML =
+            akulinaMonogramSvg() +
+            '<div class="akulina-wordmark">AKULINA</div>' +
+            '<div class="author-submark">author-created educational material</div>' +
+            '<div class="author-submark ru-support">авторское учебное пособие</div>';
+          content.insertBefore(logo, content.firstChild);
+        }
+      });
+    }
+
+    renderVocab();
+    brandBookPages();
+    initInteractiveSlides();
+    initMobileWorkbookTasks();
+    setPage(pageIndex);
+  </script>
+</body>
+</html>

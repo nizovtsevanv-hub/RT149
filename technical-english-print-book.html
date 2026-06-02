@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical English Starter Book — Print</title>
+  <style>
+    :root {
+      --bg: #F4EFE8;
+      --bg-alt: #F2ECE4;
+      --bg-soft: #EFE7DE;
+      --page: #FCF9F5;
+      --card: #FFFDFB;
+      --blueprint-navy: #0f2a44;
+      --light-blue: #dbeafe;
+      --rule-yellow: #fef3c7;
+      --unit2-green: #dcfce7;
+      --unit3-rose: #fce7f3;
+      --text: #4E4540;
+      --text-muted: #6B625C;
+      --heading: #5F3651;
+      --border: #E5D8CC;
+      --accent: #A64D79;
+      --grain-opacity: 0.028;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Inter, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+      color: var(--text);
+      min-height: 100vh;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at top center, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 38%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 36% 24% at 0% 0%, rgba(255, 255, 255, 0.32), transparent 72%),
+        radial-gradient(ellipse 34% 22% at 100% 0%, rgba(255, 255, 255, 0.26), transparent 70%),
+        radial-gradient(ellipse 38% 26% at 100% 100%, rgba(78, 69, 64, 0.045), transparent 74%),
+        radial-gradient(ellipse 36% 24% at 0% 100%, rgba(78, 69, 64, 0.04), transparent 72%);
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--blueprint-navy);
+      color: #fff;
+      padding: 10px 16px;
+      border-bottom: 2px solid var(--border);
+    }
+    .toolbar button {
+      border: 1px solid #93c5fd;
+      background: var(--card);
+      color: #0b3d66;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .book { max-width: 860px; margin: 16px auto 30px; padding: 0 12px; }
+    .inner-page-template,
+    .book-page,
+    .page {
+      position: relative;
+      padding-bottom: 28mm;
+      box-sizing: border-box;
+    }
+    .page {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 16px 28mm 16px;
+      margin-bottom: 16px;
+      page-break-after: always;
+      min-height: auto;
+      box-shadow: 0 8px 22px rgba(78, 69, 64, 0.06);
+    }
+    .cover-page, .back-cover-page {
+      background:
+        radial-gradient(circle at 50% 38%, rgba(166, 77, 121, 0.07) 0%, rgba(255, 255, 255, 0) 45%),
+        radial-gradient(circle at top center, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 40%),
+        linear-gradient(180deg, var(--card) 0%, var(--page) 100%);
+    }
+    .page-watermark {
+      display: none !important;
+      position: absolute;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .cover-page .page-watermark.cover-watermark,
+    .back-cover-page .page-watermark.cover-watermark {
+      display: flex !important;
+    }
+    .page:not(.cover-page):not(.back-cover-page) .page-watermark {
+      display: none !important;
+    }
+    .page-watermark.cover-watermark svg {
+      width: 200px;
+      height: 200px;
+      opacity: 0.09;
+    }
+    .akulina-monogram.luxury-classic { color: #A64D79; }
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+    .page-footer {
+      position: absolute;
+      left: 14mm;
+      right: 14mm;
+      bottom: 8mm;
+      height: 14mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .cover-page .page-footer,
+    .back-cover-page .page-footer {
+      display: none;
+    }
+    .footer-monogram {
+      width: 28px;
+      height: 28px;
+      color: #A64D79;
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+    .page-number {
+      position: absolute;
+      right: 14mm;
+      bottom: 9mm;
+      font-size: 10.5px;
+      color: #8A6A78;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      z-index: 6;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .cover-page .page-number,
+    .back-cover-page .page-number {
+      display: none;
+    }
+    .cover-logo, .back-cover-logo {
+      text-align: center;
+      margin: 0 auto 18px;
+      max-width: 320px;
+      position: relative;
+      z-index: 2;
+    }
+    .cover-logo .akulina-monogram.luxury-classic,
+    .back-cover-logo .akulina-monogram.luxury-classic {
+      width: 156px;
+      height: 156px;
+      opacity: 0.26;
+      color: #A64D79;
+    }
+    .akulina-wordmark {
+      margin-top: 10px;
+      text-align: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 16px;
+      letter-spacing: 0.28em;
+      color: #A64D79;
+      opacity: 0.92;
+      font-weight: 700;
+    }
+    .author-submark {
+      margin-top: 5px;
+      text-align: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8A6A78;
+      opacity: 0.82;
+    }
+    .author-submark.ru-support { text-transform: none; letter-spacing: 0; font-size: 11px; opacity: 0.9; }
+    h1, h2, h3 { color: var(--heading); margin-top: 0; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 28px; }
+    h3 { font-size: 22px; }
+    h4 { font-size: 18px; margin: 10px 0 6px; }
+    .ru-support { display: block; color: var(--text-muted); }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      margin: 10px 0;
+      background: var(--card);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset, 0 3px 12px rgba(78, 69, 64, 0.04);
+    }
+    .rule { background: var(--rule-yellow); }
+    .unit2 { background: var(--unit2-green); }
+    .unit3 { background: var(--unit3-rose); }
+    .unit-label {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .u1-label { background: #1e40af; }
+    .u2-label { background: #15803d; }
+    .u3-label { background: #9d174d; }
+    .vocab-line { margin: 6px 0; padding: 6px 0; border-bottom: 1px dashed var(--border); }
+    .blueprint {
+      background: #0b2f4c;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .blueprint-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+    .bp-box {
+      position: relative;
+      min-height: 280px;
+      border: 2px solid #93c5fd;
+      border-radius: 8px;
+      background:
+        linear-gradient(rgba(148,163,184,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.18) 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Overlay hides baked-in source marker; sized per illustration in HTML. */
+    .image-branding-patch {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 6px;
+      box-shadow: 0 0 0 1px rgba(230, 230, 230, 0.45);
+      pointer-events: none;
+      z-index: 8;
+    }
+    .image-branding-patch--cutaway {
+      left: 0.5%;
+      top: 0.4%;
+      width: 13%;
+      height: 4%;
+    }
+    .image-branding-patch--installation {
+      right: 0.6%;
+      bottom: 9%;
+      left: auto;
+      width: 14%;
+      height: 4.2%;
+    }
+    .bp-box img {
+      width: 100%;
+      height: 100%;
+      max-height: 640px;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+    .visual-frame {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      max-height: 680px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .visual-frame img {
+      width: 100%;
+      height: 100%;
+      max-height: 640px;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+    .terms .card { background: rgba(255,255,255,.08); color: #fff; border-color: #93c5fd; }
+    .answer { background: #eefbf0; }
+    .blank { border-bottom: 2px solid #334155; min-width: 80px; display: inline-block; }
+    ol.ex { padding-left: 22px; }
+    ol.ex li { margin: 8px 0; }
+    @page { size: A4; margin: 14mm; }
+    @media screen and (max-width: 767px) {
+      body { overflow-x: hidden; }
+      main.book { padding: 12px; }
+      .page {
+        padding: 16px;
+        padding-bottom: 28mm;
+      }
+      .page-footer {
+        left: 12px;
+        right: 12px;
+        bottom: 8px;
+        height: 28px;
+      }
+      .footer-monogram {
+        width: 22px;
+        height: 22px;
+        opacity: 0.45;
+      }
+      .page-number {
+        right: 12px;
+        bottom: 12px;
+        font-size: 10px;
+      }
+      .blueprint-grid { grid-template-columns: 1fr; }
+      .toolbar button { min-height: 44px; width: 100%; border-radius: 14px; }
+    }
+    @media print {
+      body {
+        background: var(--bg);
+      }
+      body::before,
+      body::after { display: none; }
+      .no-print { display: none !important; }
+      .page,
+      .inner-page-template,
+      .book-page {
+        border: 0;
+        border-radius: 0;
+        margin: 0;
+        padding: 14mm 14mm 28mm 14mm;
+        min-height: 255mm;
+        box-sizing: border-box;
+      }
+      .page-watermark.cover-watermark svg { opacity: 0.09; }
+      .page-footer {
+        bottom: 8mm;
+      }
+      .page-number {
+        bottom: 9mm;
+        right: 14mm;
+        color: #8A6A78;
+      }
+      .page { background: var(--card); box-shadow: none; }
+      .card { box-shadow: none; }
+      .component-zone,
+      .hotspot-layer,
+      .zone-layer { display: none !important; }
+      .bp-box img,
+      .visual-frame img { object-fit: contain !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar no-print">
+    <button onclick="window.print()">Print / Save as PDF</button>
+  </div>
+  <main class="book">
+
+    <section class="page cover-page">
+      <h1>Technical English Starter Book</h1>
+      <p><strong>Visual Technical English for Beginners</strong></p>
+      <p class="ru-support"><strong>Визуальный технический английский с нуля</strong></p>
+      <div class="card">
+        <h3>Three Complete Units</h3>
+        <p><strong>Unit 1:</strong> Present Simple + a/an + plurals</p>
+        <p><strong>Unit 2:</strong> this/that/these/those + there is/are + have/has</p>
+        <p><strong>Unit 3:</strong> imperatives + First/Then/Finally + prepositions + can/can't</p>
+        <p class="ru-support">Три полных учебных модуля для начинающих конструкторов.</p>
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>How To Use</h2>
+      <ul>
+        <li>One block = one rule + short explanation + visual focus + model examples + exercises.</li>
+        <li>Complete each unit in order: vocabulary → rules → workbook → speaking → progress check.</li>
+        <li>Russian support is shown on every page for instructions and explanations.</li>
+      </ul>
+      <p class="ru-support">Один блок = одно правило + объяснение + пример + упражнения. Проходите каждый юнит по порядку. Русские подсказки на каждой странице.</p>
+    </section>
+
+    <section class="page">
+      <h2>Panel Fastener — 3D Cutaway & Vocabulary</h2>
+      <div class="blueprint">
+        <div class="blueprint-grid">
+          <div class="bp-box">
+            <img src="./images/panel-fastener-cutaway.png" alt="Panel fastener technical illustration" onerror="this.onerror=null; this.src='./images/blueprint-handout.png';">
+            <div class="image-branding-patch image-branding-patch--cutaway" aria-hidden="true"></div>
+            <svg id="print-bp-fallback" style="display:none;width:100%;height:100%;" viewBox="0 0 600 360">
+              <rect x="80" y="70" width="360" height="180" fill="none" stroke="#e2e8f0" stroke-width="3"></rect>
+              <circle cx="250" cy="160" r="58" fill="none" stroke="#e2e8f0" stroke-width="3"></circle>
+              <line x1="120" y1="80" x2="30" y2="40" stroke="#facc15" stroke-width="2"></line>
+              <line x1="420" y1="160" x2="560" y2="80" stroke="#facc15" stroke-width="2"></line>
+            </svg>
+          </div>
+          <div class="terms">
+            <div class="card">1. stud-bolt /stʌd bəʊlt/ <span class="ru-support">болт-шпилька</span></div>
+            <div class="card">2. hex recess /hex rɪˈses/ <span class="ru-support">шестигранное углубление</span></div>
+            <div class="card">3. thread /θred/ <span class="ru-support">резьба</span></div>
+            <div class="card">4. diameter /daɪˈæmɪtə/ <span class="ru-support">диаметр</span></div>
+            <div class="card">5. depth /depθ/ <span class="ru-support">глубина</span></div>
+            <div class="card">6. retaining cap /rɪˈteɪnɪŋ kæp/ <span class="ru-support">стопорный колпачок</span></div>
+            <div class="card">7. retaining washer /rɪˈteɪnɪŋ ˈwɒʃə/ <span class="ru-support">стопорная шайба</span></div>
+            <div class="card">8. panel /ˈpænəl/ <span class="ru-support">панель</span></div>
+            <div class="card">9. hole /həʊl/ <span class="ru-support">отверстие</span></div>
+            <div class="card">10. section view /ˈsekʃən vjuː/ <span class="ru-support">вид в разрезе</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== UNIT 1 ========== -->
+    <section class="page">
+      <span class="unit-label u1-label">UNIT 1</span>
+      <h2>Present Simple + a/an + plurals</h2>
+      <p class="ru-support">Present Simple + артикли a/an + множественное число</p>
+      <p><strong>Unit goal:</strong> Say simple facts and checks about a technical drawing.</p>
+      <p class="ru-support"><strong>Цель:</strong> Говорим простые факты и проверки по техническому чертежу.</p>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u1-label">UNIT 1</span>
+      <h2>Vocabulary</h2>
+      <div class="vocab-line"><strong>a drawing</strong> /ə ˈdrɔːɪŋ/ <span class="ru-support">чертёж</span></div>
+      <div class="vocab-line"><strong>a thread</strong> /ə θred/ <span class="ru-support">резьба</span></div>
+      <div class="vocab-line"><strong>a washer</strong> /ə ˈwɒʃə/ <span class="ru-support">шайба</span></div>
+      <div class="vocab-line"><strong>a diameter</strong> /ə daɪˈæmɪtə/ <span class="ru-support">диаметр</span></div>
+      <div class="vocab-line"><strong>a collet</strong> /ə ˈkɒlɪt/ <span class="ru-support">цанга</span></div>
+      <div class="vocab-line"><strong>a stud-bolt</strong> /ə stʌd bəʊlt/ <span class="ru-support">болт-шпилька</span></div>
+      <div class="vocab-line"><strong>to read</strong> /tə riːd/ <span class="ru-support">читать</span></div>
+      <div class="vocab-line"><strong>to check</strong> /tə tʃek/ <span class="ru-support">проверять</span></div>
+      <div class="vocab-line"><strong>to measure</strong> /tə ˈmeʒə/ <span class="ru-support">измерять</span></div>
+      <div class="vocab-line"><strong>to verify</strong> /tə ˈverɪfaɪ/ <span class="ru-support">проверять / подтверждать</span></div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u1-label">UNIT 1</span>
+      <h2>Rule Cards</h2>
+      <div class="card rule">
+        <h4>Rule 1: Present Simple = routine / fact / check</h4>
+        <p>Use Present Simple for regular actions, facts and checks.</p>
+        <p class="ru-support">Используем Present Simple для обычных действий, фактов и проверок.</p>
+        <p><em>I read a drawing. We check a thread. The tool rotates. The engineer reads a note.</em></p>
+      </div>
+      <div class="card rule">
+        <h4>Rule 2: He / She / It + -s / -es</h4>
+        <p><em>The engineer reads a note. The tool rotates clockwise. The part matches the size.</em></p>
+      </div>
+      <div class="card rule">
+        <h4>Rule 3: Negative — do not / does not</h4>
+        <p><em>I do not read. We do not change the note. The part does not rotate. The washer does not fit.</em></p>
+      </div>
+      <div class="card rule">
+        <h4>Rule 4: Questions — Do / Does ...?</h4>
+        <p><em>Do you read a drawing? Do we check a diameter? Does the tool rotate? Does the engineer check a note? Does the part meet the spec?</em></p>
+      </div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u1-label">UNIT 1</span>
+      <h2>Rule Cards (continued)</h2>
+      <div class="card rule">
+        <h4>Rule 5: a / an</h4>
+        <p>Use <strong>a</strong> before consonant sound. Use <strong>an</strong> before vowel sound.</p>
+        <p class="ru-support">a перед согласным звуком, an перед гласным.</p>
+        <p><em>a thread • a washer • a drawing • an angle • an engineer</em></p>
+      </div>
+      <div class="card rule">
+        <h4>Rule 6: Plurals</h4>
+        <p><em>a thread → threads • a washer → washers • a box → boxes • a body → bodies</em></p>
+      </div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u1-label">UNIT 1</span>
+      <h2>Workbook</h2>
+      <p class="ru-support">Рабочая тетрадь — выполните все упражнения.</p>
+      <div class="card">
+        <p><strong>Exercise 1.</strong> Choose the correct form.</p>
+        <ol class="ex">
+          <li>We read / reads a drawing.</li>
+          <li>The engineer check / checks a thread.</li>
+          <li>The tool rotate / rotates clockwise.</li>
+          <li>I measure / measures a diameter.</li>
+          <li>The washer fit / fits the part.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <p><strong>Exercise 2.</strong> Make negative.</p>
+        <ol class="ex">
+          <li>We verify a size. → <span class="blank"></span></li>
+          <li>The tool rotates. → <span class="blank"></span></li>
+          <li>He checks a note. → <span class="blank"></span></li>
+        </ol>
+      </div>
+      <div class="card">
+        <p><strong>Exercise 3.</strong> Make questions.</p>
+        <ol class="ex">
+          <li>you / read / a drawing? → <span class="blank"></span></li>
+          <li>the tool / rotate? → <span class="blank"></span></li>
+          <li>the engineer / check / a note? → <span class="blank"></span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u1-label">UNIT 1</span>
+      <h2>Workbook (continued) & Speaking</h2>
+      <div class="card">
+        <p><strong>Exercise 4.</strong> Write a or an.</p>
+        <ol class="ex">
+          <li><span class="blank"></span> thread</li>
+          <li><span class="blank"></span> angle</li>
+          <li><span class="blank"></span> engineer</li>
+          <li><span class="blank"></span> washer</li>
+        </ol>
+      </div>
+      <div class="card">
+        <p><strong>Exercise 5.</strong> Write the plural.</p>
+        <ol class="ex">
+          <li>a thread → <span class="blank"></span></li>
+          <li>a washer → <span class="blank"></span></li>
+          <li>a body → <span class="blank"></span></li>
+          <li>a box → <span class="blank"></span></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Speaking Task</h3>
+        <p>Say 3 short sentences:</p>
+        <ul>
+          <li>This is a drawing.</li>
+          <li>We check the diameter.</li>
+          <li>The tool rotates clockwise.</li>
+        </ul>
+        <p class="ru-support">Проговорите 3 коротких предложения вслух.</p>
+      </div>
+    </section>
+
+    <!-- ========== UNIT 2 ========== -->
+    <section class="page">
+      <span class="unit-label u2-label">UNIT 2</span>
+      <h2>this / that / these / those • there is / there are • have / has</h2>
+      <p class="ru-support">This / That • There is / There are • Have / Has</p>
+      <p><strong>Unit goal:</strong> Point to objects, describe what is on the drawing, and say what a part has.</p>
+      <p class="ru-support"><strong>Цель:</strong> Показываем объекты, описываем, что есть на чертеже, и говорим, что имеет деталь.</p>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u2-label">UNIT 2</span>
+      <h2>Vocabulary</h2>
+      <div class="vocab-line"><strong>a part</strong> /ə pɑːt/ <span class="ru-support">деталь</span></div>
+      <div class="vocab-line"><strong>a note</strong> /ə nəʊt/ <span class="ru-support">примечание</span></div>
+      <div class="vocab-line"><strong>a handle</strong> /ə ˈhændl/ <span class="ru-support">рукоятка</span></div>
+      <div class="vocab-line"><strong>a hole</strong> /ə həʊl/ <span class="ru-support">отверстие</span></div>
+      <div class="vocab-line"><strong>a surface</strong> /ə ˈsɜːfɪs/ <span class="ru-support">поверхность</span></div>
+      <div class="vocab-line"><strong>to hold</strong> /tə həʊld/ <span class="ru-support">держать</span></div>
+      <div class="vocab-line"><strong>to fit</strong> /tə fɪt/ <span class="ru-support">подходить</span></div>
+      <div class="vocab-line"><strong>to meet</strong> /tə miːt/ <span class="ru-support">соответствовать</span></div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u2-label">UNIT 2</span>
+      <h2>Rule Cards</h2>
+      <div class="card rule unit2">
+        <h4>Rule 1: this / that / these / those</h4>
+        <p>Use <strong>this</strong> and <strong>these</strong> for near objects. Use <strong>that</strong> and <strong>those</strong> for far objects.</p>
+        <p class="ru-support">This/these — близко. That/those — далеко.</p>
+        <p><em>This part is clean. That note is important. These washers are ready. Those holes are small.</em></p>
+      </div>
+      <div class="card rule unit2">
+        <h4>Rule 2: There is / There are</h4>
+        <p>Use <strong>there is</strong> for one object. Use <strong>there are</strong> for two or more objects.</p>
+        <p class="ru-support">There is — один объект. There are — два или больше.</p>
+        <p><em>There is a thread on the part. There is a note on page 3. There are two washers in the box. There are three holes in the panel.</em></p>
+      </div>
+      <div class="card rule unit2">
+        <h4>Rule 3: have / has</h4>
+        <p>Use <strong>have</strong> with I / we / they. Use <strong>has</strong> with he / she / it.</p>
+        <p class="ru-support">Have — с I / we / they. Has — с he / she / it.</p>
+        <p><em>I have a drawing. We have a clean part. The tool has a handle. The stud-bolt has a thread.</em></p>
+      </div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u2-label">UNIT 2</span>
+      <h2>Workbook & Speaking</h2>
+      <div class="card unit2">
+        <p><strong>Exercise 1.</strong> Choose this / that / these / those.</p>
+        <ol class="ex">
+          <li><span class="blank"></span> washer here is clean.</li>
+          <li><span class="blank"></span> holes there are small.</li>
+          <li><span class="blank"></span> note on this page is important.</li>
+          <li><span class="blank"></span> parts on the far table are ready.</li>
+        </ol>
+        <p class="ru-support">Выберите this/that/these/those.</p>
+      </div>
+      <div class="card unit2">
+        <p><strong>Exercise 2.</strong> Write is or are.</p>
+        <ol class="ex">
+          <li>There <span class="blank"></span> a thread on the part.</li>
+          <li>There <span class="blank"></span> two notes on the page.</li>
+          <li>There <span class="blank"></span> a handle on the tool.</li>
+          <li>There <span class="blank"></span> three holes here.</li>
+        </ol>
+      </div>
+      <div class="card unit2">
+        <p><strong>Exercise 3.</strong> Complete with have or has.</p>
+        <ol class="ex">
+          <li>We <span class="blank"></span> a drawing.</li>
+          <li>The part <span class="blank"></span> a hole.</li>
+          <li>The tool <span class="blank"></span> a handle.</li>
+          <li>I <span class="blank"></span> a note.</li>
+        </ol>
+      </div>
+      <div class="card unit2">
+        <h3>Speaking Task</h3>
+        <p>Say 4 short phrases:</p>
+        <ul>
+          <li>This is a part.</li>
+          <li>There is a thread.</li>
+          <li>The tool has a handle.</li>
+          <li>Those washers are clean.</li>
+        </ul>
+        <p class="ru-support">Проговорите 4 короткие фразы.</p>
+      </div>
+    </section>
+
+    <!-- ========== UNIT 3 ========== -->
+    <section class="page">
+      <span class="unit-label u3-label">UNIT 3</span>
+      <h2>Imperatives • First / Then / Finally • Prepositions • can / can't</h2>
+      <p class="ru-support">Команды • Шаги • Предлоги • Can / Can't</p>
+      <p><strong>Unit goal:</strong> Give simple technical instructions and describe position.</p>
+      <p class="ru-support"><strong>Цель:</strong> Даем простые технические команды и описываем положение детали.</p>
+      <div class="card unit3">
+        <h3>Installation Sequence — First / Then / Finally</h3>
+        <p class="ru-support">3D-схема установки: First → Then → Finally.</p>
+        <div class="blueprint">
+          <div class="blueprint-grid">
+            <div class="bp-box" style="min-height:220px;">
+              <img src="./images/installation-handout.png" alt="Panel fastener technical illustration — installation sequence" onerror="this.style.display='none';document.getElementById('print-inst-fallback').style.display='block';">
+              <div class="image-branding-patch image-branding-patch--installation" aria-hidden="true"></div>
+              <svg id="print-inst-fallback" style="display:none;width:100%;height:100%;" viewBox="0 0 600 280">
+                <rect x="40" y="40" width="520" height="180" fill="none" stroke="#e2e8f0" stroke-width="2"></rect>
+                <text x="80" y="120" fill="#fef08a" font-size="14">1 First — Insert cap</text>
+                <text x="230" y="120" fill="#fef08a" font-size="14">2 Then — Tighten</text>
+                <text x="400" y="120" fill="#fef08a" font-size="14">3 Finally — Remove</text>
+              </svg>
+            </div>
+            <div class="terms">
+              <div class="card"><strong>First:</strong> Insert a cap into a collet. <span class="ru-support">Вставьте колпачок.</span></div>
+              <div class="card"><strong>Then:</strong> Tighten the handle. <span class="ru-support">Затяните рукоятку.</span></div>
+              <div class="card"><strong>Finally:</strong> Remove the tool. <span class="ru-support">Снимите инструмент.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u3-label">UNIT 3</span>
+      <h2>Vocabulary</h2>
+      <div class="vocab-line"><strong>a cap</strong> /ə kæp/ <span class="ru-support">колпачок</span></div>
+      <div class="vocab-line"><strong>a panel</strong> /ə ˈpænəl/ <span class="ru-support">панель</span></div>
+      <div class="vocab-line"><strong>a box</strong> /ə bɒks/ <span class="ru-support">коробка</span></div>
+      <div class="vocab-line"><strong>to insert</strong> /tə ɪnˈsɜːt/ <span class="ru-support">вставлять</span></div>
+      <div class="vocab-line"><strong>to tighten</strong> /tə ˈtaɪtn/ <span class="ru-support">затягивать</span></div>
+      <div class="vocab-line"><strong>to rotate</strong> /tə rəʊˈteɪt/ <span class="ru-support">поворачивать</span></div>
+      <div class="vocab-line"><strong>to remove</strong> /tə rɪˈmuːv/ <span class="ru-support">снимать</span></div>
+      <div class="vocab-line"><strong>to place</strong> /tə pleɪs/ <span class="ru-support">размещать</span></div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u3-label">UNIT 3</span>
+      <h2>Rule Cards</h2>
+      <div class="card rule unit3">
+        <h4>Rule 1: Imperative = command / instruction</h4>
+        <p>Use the verb without <strong>to</strong> and without a subject.</p>
+        <p class="ru-support">Команда строится просто: глагол без to и без подлежащего.</p>
+        <p><em>Insert a cap into a collet. Tighten the handle. Rotate the tool clockwise. Remove the part carefully.</em></p>
+      </div>
+      <div class="card rule unit3">
+        <h4>Rule 2: First / Then / Finally</h4>
+        <p>Use these words to order technical steps.</p>
+        <p class="ru-support">Используем эти слова, чтобы выстроить шаги процесса.</p>
+        <p><em>First, insert a cap. Then, tighten the handle. Finally, remove the tool.</em></p>
+      </div>
+      <div class="card rule unit3">
+        <h4>Rule 3: Prepositions</h4>
+        <p>Use: <strong>in</strong> • <strong>on</strong> • <strong>into</strong> • <strong>under</strong> • <strong>between</strong></p>
+        <p><em>in a box • on a surface • into a hole • under a washer • between two parts</em></p>
+      </div>
+      <div class="card rule unit3">
+        <h4>Rule 4: can / can't</h4>
+        <p><strong>Can</strong> shows possibility. <strong>Can't</strong> shows that an action is not possible.</p>
+        <p class="ru-support">Can — можно / может. Can't — нельзя / не может.</p>
+        <p><em>The tool can rotate. The part can fit the hole. The washer can't hold the cap alone. We can verify the size.</em></p>
+      </div>
+    </section>
+
+    <section class="page">
+      <span class="unit-label u3-label">UNIT 3</span>
+      <h2>Workbook & Speaking</h2>
+      <div class="card unit3">
+        <p><strong>Exercise 1.</strong> Put the steps in order (write 1, 2, 3).</p>
+        <ol class="ex">
+          <li>( ) Finally, remove the tool.</li>
+          <li>( ) First, insert a cap.</li>
+          <li>( ) Then, rotate the handle.</li>
+        </ol>
+        <p class="ru-support">Расставьте шаги в правильном порядке.</p>
+      </div>
+      <div class="card unit3">
+        <p><strong>Exercise 2.</strong> Choose the correct preposition.</p>
+        <ol class="ex">
+          <li>Put the cap <span class="blank"></span> the collet.</li>
+          <li>The washer is <span class="blank"></span> the head and the cap.</li>
+          <li>The note is <span class="blank"></span> the page.</li>
+          <li>The part is <span class="blank"></span> the box.</li>
+        </ol>
+      </div>
+      <div class="card unit3">
+        <p><strong>Exercise 3.</strong> Complete with can or can't.</p>
+        <ol class="ex">
+          <li>The tool <span class="blank"></span> rotate.</li>
+          <li>The part <span class="blank"></span> meet the size now.</li>
+          <li>We <span class="blank"></span> insert the cap.</li>
+        </ol>
+      </div>
+      <div class="card unit3">
+        <h3>Speaking Task</h3>
+        <p>Say 4 short phrases:</p>
+        <ul>
+          <li>Insert the cap.</li>
+          <li>Rotate the handle.</li>
+          <li>Put the part in the box.</li>
+          <li>The tool can rotate.</li>
+        </ul>
+        <p class="ru-support">Проговорите 4 короткие фразы-команды.</p>
+      </div>
+      <div class="card unit3">
+        <h3>Sound Focus: British /θ/</h3>
+        <p>thread /θred/ • through /θruː/</p>
+        <p>Practice: thread • a thread • through • through the hole • The thread is on the part.</p>
+        <p class="ru-support">Звук /θ/ произносится с языком между зубами. Не заменяйте его на /с/ или /т/.</p>
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>Final Revision</h2>
+      <p><strong>Mixed Practice A:</strong></p>
+      <p class="ru-support">Смешанная практика по всем трём юнитам.</p>
+      <ol class="ex">
+        <li>The engineer <span class="blank"></span> the drawing. (read / reads)</li>
+        <li>The tool <span class="blank"></span> not rotate. (do / does)</li>
+        <li><span class="blank"></span> the washer fit? (Do / Does)</li>
+        <li>There <span class="blank"></span> a note on page 3. (is / are)</li>
+        <li>The part <span class="blank"></span> a thread. (have / has)</li>
+        <li>Put the cap <span class="blank"></span> the collet. (in / into)</li>
+        <li>The tool <span class="blank"></span> rotate. (can / can't)</li>
+      </ol>
+      <div class="card">
+        <h3>Mixed Speaking</h3>
+        <p>Say 5 short phrases:</p>
+        <ol>
+          <li>Name a part.</li>
+          <li>Name one element.</li>
+          <li>Say one routine action.</li>
+          <li>Say one instruction.</li>
+          <li>Ask one simple question.</li>
+        </ol>
+        <p><strong>Model:</strong> This is a stud-bolt. It has a thread. We check the diameter. Insert a cap into a collet. Does the tool rotate?</p>
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>Teacher Notes</h2>
+      <div class="card">
+        <h3>Unit 1 — Present Simple + a/an + plurals</h3>
+        <p><strong>Objective:</strong> facts and checks in Present Simple.</p>
+        <p><strong>10-minute flow:</strong> vocab (3 min) → rules (3 min) → workbook (3 min) → speaking (1 min).</p>
+        <p><strong>Questions:</strong> Do we use -s with "we"? What is plural of body?</p>
+        <p><strong>Expected answers:</strong> No; bodies.</p>
+      </div>
+      <div class="card unit2">
+        <h3>Unit 2 — this/that • there is/are • have/has</h3>
+        <p><strong>Objective:</strong> identify near/far objects and describe drawing items.</p>
+        <p><strong>10-minute flow:</strong> pointing game (2) → there is/are drill (3) → have/has drill (3) → speaking (2).</p>
+        <p><strong>Questions:</strong> Which word for far plural? Have or has with "tool"?</p>
+        <p><strong>Expected answers:</strong> those; has.</p>
+      </div>
+      <div class="card unit3">
+        <h3>Unit 3 — Imperatives • Steps • Prepositions • can/can't</h3>
+        <p><strong>Objective:</strong> give instructions and positions.</p>
+        <p><strong>10-minute flow:</strong> imperative board race (3) → steps order (3) → prepositions mini-lab (2) → can/can't check (2).</p>
+        <p><strong>Questions:</strong> Put cap ___ collet? Tool ___ rotate?</p>
+        <p><strong>Expected answers:</strong> into; can.</p>
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>Answer Key</h2>
+      <div class="card answer">
+        <h3>Unit 1</h3>
+        <p><strong>Exercise 1:</strong> 1 read, 2 checks, 3 rotates, 4 measure, 5 fits</p>
+        <p><strong>Exercise 2:</strong> We do not verify a size. The tool does not rotate. He does not check a note.</p>
+        <p><strong>Exercise 3:</strong> Do you read a drawing? Does the tool rotate? Does the engineer check a note?</p>
+        <p><strong>Exercise 4:</strong> a, an, an, a</p>
+        <p><strong>Exercise 5:</strong> threads, washers, bodies, boxes</p>
+      </div>
+      <div class="card answer">
+        <h3>Unit 2</h3>
+        <p><strong>Exercise 1:</strong> This, Those, This, Those</p>
+        <p><strong>Exercise 2:</strong> is, are, is, are</p>
+        <p><strong>Exercise 3:</strong> have, has, has, have</p>
+      </div>
+      <div class="card answer">
+        <h3>Unit 3</h3>
+        <p><strong>Exercise 1:</strong> 1 First, insert a cap. 2 Then, rotate the handle. 3 Finally, remove the tool.</p>
+        <p><strong>Exercise 2:</strong> into, between, on, in</p>
+        <p><strong>Exercise 3:</strong> can, can't, can</p>
+      </div>
+      <div class="card answer">
+        <h3>Final Revision</h3>
+        <p>1 reads, 2 does, 3 Does, 4 is, 5 has, 6 into, 7 can</p>
+      </div>
+    </section>
+
+    <section class="page back-cover-page">
+      <h2>Back Cover</h2>
+      <div class="card">
+        <h3>About this booklet</h3>
+        <p class="ru-support">Авторское учебное пособие для начинающих конструкторов и техспециалистов.</p>
+        <p>A premium, classroom-ready starter package for technical English practice (Units 1–3), with visual rules and workbook checks.</p>
+      </div>
+    </section>
+
+  </main>
+  <script>
+    (function () {
+      function footerMonogramSvg() {
+        return akulinaMonogramSvg().replace(
+          'class="akulina-monogram luxury-classic"',
+          'class="footer-monogram akulina-monogram luxury-classic"'
+        );
+      }
+      function akulinaMonogramSvg() {
+        return '<svg class="akulina-monogram luxury-classic" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-label="Akulina monogram" role="img">' +
+          '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">' +
+          '<circle cx="110" cy="110" r="88" stroke-width="1.9"/>' +
+          '<circle cx="110" cy="110" r="78" stroke-width="0.9" opacity="0.55"/>' +
+          '<path d="M66 154 L110 52 L154 154" stroke-width="3.8"/>' +
+          '<path d="M83 112 H137" stroke-width="3.2"/>' +
+          '<path d="M114 96 L149 67" stroke-width="2.6"/>' +
+          '<path d="M113 108 L150 145" stroke-width="2.6"/>' +
+          '<path d="M82 151 C91 142, 103 138, 110 138 C117 138, 129 142, 138 151" stroke-width="1.8"/>' +
+          '<path d="M110 29 L110 23" stroke-width="1.6"/>' +
+          '<path d="M104 26 C106 22, 114 22, 116 26" stroke-width="1.3"/>' +
+          '<path d="M31 110 L25 110" stroke-width="1.5"/>' +
+          '<path d="M195 110 L189 110" stroke-width="1.5"/>' +
+          '<path d="M110 195 L110 189" stroke-width="1.5"/>' +
+          '<circle cx="53" cy="53" r="1.4" fill="currentColor" stroke="none" opacity="0.75"/>' +
+          '<circle cx="167" cy="53" r="1.4" fill="currentColor" stroke="none" opacity="0.75"/>' +
+          '<circle cx="53" cy="167" r="1.4" fill="currentColor" stroke="none" opacity="0.75"/>' +
+          '<circle cx="167" cy="167" r="1.4" fill="currentColor" stroke="none" opacity="0.75"/>' +
+          '</g></svg>';
+      }
+      var pages = Array.from(document.querySelectorAll('main.book .page'));
+      var lastIndex = pages.length - 1;
+      pages.forEach(function (page, i) {
+        var isCover = i === 0;
+        var isBack = i === lastIndex;
+
+        ['.page-watermark', '.page-footer', '.page-number', '.cover-author-brand', '.cover-logo', '.back-cover-logo'].forEach(function (sel) {
+          page.querySelectorAll(sel).forEach(function (n) { n.remove(); });
+        });
+
+        var content = page.querySelector('.page-content');
+        if (!content) {
+          content = document.createElement('div');
+          content.className = 'page-content';
+          while (page.firstChild) content.appendChild(page.firstChild);
+          page.appendChild(content);
+        }
+
+        if (isCover || isBack) {
+          var wm = document.createElement('div');
+          wm.className = 'page-watermark cover-watermark';
+          wm.setAttribute('aria-hidden', 'true');
+          wm.innerHTML = akulinaMonogramSvg();
+          page.insertBefore(wm, content);
+        } else {
+          var footer = document.createElement('footer');
+          footer.className = 'page-footer';
+          footer.setAttribute('aria-hidden', 'true');
+          footer.innerHTML = footerMonogramSvg();
+          page.appendChild(footer);
+        }
+
+        if (!isCover && !isBack) {
+          var num = document.createElement('div');
+          num.className = 'page-number';
+          num.textContent = String(i + 1);
+          page.appendChild(num);
+        }
+
+        if (isCover || isBack) {
+          var logo = document.createElement('div');
+          logo.className = isCover ? 'cover-logo' : 'back-cover-logo';
+          logo.innerHTML =
+            akulinaMonogramSvg() +
+            '<div class="akulina-wordmark">AKULINA</div>' +
+            '<div class="author-submark">author-created educational material</div>' +
+            '<div class="author-submark ru-support">авторское учебное пособие</div>';
+          content.insertBefore(logo, content.firstChild);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
